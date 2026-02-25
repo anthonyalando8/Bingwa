@@ -90,7 +90,7 @@ func (s *CustomerService) CreateCustomer(ctx context.Context, agentID int64, req
 		AltPhoneNumber:    sql.NullString{String: req.AltPhoneNumber, Valid: req.AltPhoneNumber != ""},
 		Email:             sql.NullString{String: req.Email, Valid: req.Email != ""},
 		Notes:             sql.NullString{String: req.Notes, Valid: req.Notes != ""},
-		Tags:              pq.StringArray(req.Tags),
+		Tags:              req.Tags,
 		Metadata:          req.Metadata,
 		IsActive:          true,
 		IsVerified:        false,
@@ -229,7 +229,7 @@ func (s *CustomerService) UpdateCustomer(ctx context.Context, agentID, customerI
 		c.Notes = sql.NullString{String: *req.Notes, Valid: *req.Notes != ""}
 	}
 	if req.Tags != nil {
-		c.Tags = pq.StringArray(req.Tags)
+		c.Tags = req.Tags
 	}
 	if req.Metadata != nil {
 		c.Metadata = req.Metadata

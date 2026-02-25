@@ -220,7 +220,7 @@ func (s *TransactionService) CreateOfferRequest(ctx context.Context, agentID int
 	}
 
 	// Link redemption to request
-	redemption.OfferRequestID = offerRequest.ID
+	redemption.OfferRequestID = &offerRequest.ID
 
 	// Create redemption
 	if err := s.redemptionRepo.CreateWithTx(ctx, tx, redemption); err != nil {
@@ -596,7 +596,7 @@ func (s *TransactionService) createFailedRequest(ctx context.Context, agentID in
 		return nil, nil, err
 	}
 
-	redemption.OfferRequestID = offerRequest.ID
+	redemption.OfferRequestID = &offerRequest.ID
 
 	if err := s.redemptionRepo.CreateWithTx(ctx, tx, redemption); err != nil {
 		return nil, nil, err

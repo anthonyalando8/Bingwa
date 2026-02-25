@@ -206,7 +206,7 @@ func (s *ScheduleService) ExecuteScheduledOffer(ctx context.Context, agentID, sc
 	redemption := &transaction.OfferRedemption{
 		RedemptionReference: redemptionRef,
 		OfferID:             scheduledOffer.OfferID,
-		OfferRequestID:      0, // No request for scheduled offers
+		OfferRequestID:      nil, // No request for scheduled offers
 		AgentIdentityID:     agentID,
 		CustomerID:          scheduledOffer.CustomerID,
 		CustomerPhone:       scheduledOffer.CustomerPhone,

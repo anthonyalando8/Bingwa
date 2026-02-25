@@ -14,6 +14,7 @@ const (
 	SubscriptionStatusSuspended SubscriptionStatus = "suspended"
 	SubscriptionStatusPending   SubscriptionStatus = "pending"
 	SubscriptionStatusTrialing  SubscriptionStatus = "trialing"
+	SubscriptionStatusPaused   SubscriptionStatus = "paused"
 )
 
 type AgentSubscription struct {

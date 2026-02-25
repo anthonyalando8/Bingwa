@@ -16,6 +16,7 @@ const (
 	PaymentMethodCard        PaymentMethod = "card"
 	PaymentMethodBank        PaymentMethod = "bank"
 	PaymentMethodAgentBalance PaymentMethod = "agent_balance"
+	PaymentMethodAirtime PaymentMethod = "airtime"
 )
 
 type TransactionStatus string
@@ -74,7 +75,7 @@ type OfferRedemption struct {
 	
 	// Related entities
 	OfferID           int64         `json:"offer_id" db:"offer_id"`
-	OfferRequestID    int64         `json:"offer_request_id" db:"offer_request_id"`
+	OfferRequestID    *int64         `json:"offer_request_id" db:"offer_request_id"`
 	AgentIdentityID   int64         `json:"agent_identity_id" db:"agent_identity_id"`
 	CustomerID        sql.NullInt64 `json:"customer_id,omitempty" db:"customer_id"`
 	CustomerPhone     string        `json:"customer_phone" db:"customer_phone"`

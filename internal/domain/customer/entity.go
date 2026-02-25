@@ -4,8 +4,6 @@ package customer
 import (
 	"database/sql"
 	"time"
-
-	"github.com/lib/pq"
 )
 
 type AgentCustomer struct {
@@ -26,7 +24,7 @@ type AgentCustomer struct {
 	
 	// Additional info
 	Notes    sql.NullString         `json:"notes,omitempty" db:"notes"`
-	Tags     pq.StringArray         `json:"tags,omitempty" db:"tags"`
+	Tags     []string               `json:"tags,omitempty" db:"tags"`
 	Metadata map[string]interface{} `json:"metadata,omitempty" db:"metadata"`
 	
 	// Timestamps

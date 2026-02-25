@@ -7,6 +7,7 @@ import (
 
 	"bingwa-service/internal/domain/offer"
 	"bingwa-service/internal/middleware"
+	xerrors "bingwa-service/internal/pkg/errors"
 	"bingwa-service/internal/pkg/response"
 	service "bingwa-service/internal/service/offer"
 
@@ -383,4 +384,149 @@ func (h *OfferHandler) CheckOfferAvailability(c *gin.Context) {
 		"available_from": o.AvailableFrom,
 		"available_until": o.AvailableUntil,
 	})
+}
+
+// GetOffersByAmount retrieves offers by amount
+func (h *OfferHandler) GetOffersByAmount(c *gin.Context) {
+	agentID := middleware.MustGetIdentityID(c)
+
+	amountStr := c.Query("amount")
+	if amountStr == "" {
+		response.Error(c, http.StatusBadRequest, "amount is required", nil)
+		return
+	}
+
+	amount, err := strconv.ParseFloat(amountStr, 64)
+	if err != nil {
+		response.Error(c, http.StatusBadRequest, "invalid amount", err)
+		return
+	}
+
+	offers, err := h.offerService.GetOffersByAmount(c.Request.Context(), agentID, amount)
+	if err != nil {
+		response.Error(c, http.StatusInternalServerError, "failed to get offers", err)
+		return
+	}
+
+	response.Success(c, http.StatusOK, "offers retrieved", offers)
+}
+
+// GetOffersByAmountRange retrieves offers by amount range
+func (h *OfferHandler) GetOffersByAmountRange(c *gin.Context) {
+	agentID := middleware.MustGetIdentityID(c)
+
+	minAmountStr := c.Query("min_amount")
+	maxAmountStr := c.Query("max_amount")
+
+	if minAmountStr == "" || maxAmountStr == "" {
+		response.Error(c, http.StatusBadRequest, "min_amount and max_amount are required", nil)
+		return
+	}
+
+	minAmount, err := strconv.ParseFloat(minAmountStr, 64)
+	if err != nil {
+		response.Error(c, http.StatusBadRequest, "invalid min_amount", err)
+		return
+	}
+
+	maxAmount, err := strconv.ParseFloat(maxAmountStr, 64)
+	if err != nil {
+		response.Error(c, http.StatusBadRequest, "invalid max_amount", err)
+		return
+	}
+
+	offers, err := h.offerService.GetOffersByAmountRange(c.Request.Context(), agentID, minAmount, maxAmount)
+	if err != nil {
+		response.Error(c, http.StatusInternalServerError, "failed to get offers", err)
+		return
+	}
+
+	response.Success(c, http.StatusOK, "offers retrieved", offers)
+}
+
+// GetOffersByTypeAndAmount retrieves offers by type and amount
+func (h *OfferHandler) GetOffersByTypeAndAmount(c *gin.Context) {
+	agentID := middleware.MustGetIdentityID(c)
+
+	offerType := c.Query("type")
+	amountStr := c.Query("amount")
+
+	if offerType == "" || amountStr == "" {
+		response.Error(c, http.StatusBadRequest, "type and amount are required", nil)
+		return
+	}
+
+	amount, err := strconv.ParseFloat(amountStr, 64)
+	if err != nil {
+		response.Error(c, http.StatusBadRequest, "invalid amount", err)
+		return
+	}
+
+	offers, err := h.offerService.GetOffersByTypeAndAmount(c.Request.Context(), agentID, offer.OfferType(offerType), amount)
+	if err != nil {
+		response.Error(c, http.StatusInternalServerError, "failed to get offers", err)
+		return
+	}
+
+	response.Success(c, http.StatusOK, "offers retrieved", offers)
+}
+
+// GetOfferByPrice retrieves a single offer by price
+func (h *OfferHandler) GetOfferByPrice(c *gin.Context) {
+	agentID := middleware.MustGetIdentityID(c)
+
+	priceStr := c.Query("price")
+	if priceStr == "" {
+		response.Error(c, http.StatusBadRequest, "price is required", nil)
+		return
+	}
+
+	price, err := strconv.ParseFloat(priceStr, 64)
+	if err != nil {
+		response.Error(c, http.StatusBadRequest, "invalid price", err)
+		return
+	}
+
+	offer, err := h.offerService.GetOfferByPrice(c.Request.Context(), agentID, price)
+	if err != nil {
+		if err == xerrors.ErrNotFound {
+			response.Error(c, http.StatusNotFound, "no offer found with this price", err)
+			return
+		}
+		response.Error(c, http.StatusInternalServerError, "failed to get offer", err)
+		return
+	}
+
+	response.Success(c, http.StatusOK, "offer retrieved", offer)
+}
+
+// GetOfferByPriceAndType retrieves a single offer by price and type
+func (h *OfferHandler) GetOfferByPriceAndType(c *gin.Context) {
+	agentID := middleware.MustGetIdentityID(c)
+
+	priceStr := c.Query("price")
+	offerType := c.Query("type")
+
+	if priceStr == "" || offerType == "" {
+		response.Error(c, http.StatusBadRequest, "price and type are required", nil)
+		return
+	}
+
+	price, err := strconv.ParseFloat(priceStr, 64)
+	if err != nil {
+		response.Error(c, http.StatusBadRequest, "invalid price", err)
+		return
+	}
+
+	offer, err := h.offerService.GetOfferByPriceAndType(c.Request.Context(), agentID, price, offer.OfferType(offerType))
+	if err != nil {
+		if err == xerrors.ErrNotFound {
+			response.Error(c, http.StatusNotFound, "no offer found with this price and type", err)
+			return
+		}
+		response.Error(c, http.StatusInternalServerError, "failed to get offer", err)
+		return
+	}
+
+	response.Success(c, http.StatusOK, "offer retrieved", offer)
 }

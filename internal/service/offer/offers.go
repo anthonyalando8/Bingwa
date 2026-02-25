@@ -1161,3 +1161,79 @@ func (s *OfferService) ValidateOfferPurchase(ctx context.Context, o *offer.Agent
 
 	return nil
 }
+
+
+
+// GetOffersByAmount retrieves offers by exact amount
+func (s *OfferService) GetOffersByAmount(ctx context.Context, agentID int64, amount float64) ([]offer.AgentOffer, error) {
+	if amount <= 0 {
+		return nil, fmt.Errorf("amount must be greater than 0")
+	}
+
+	offers, err := s.offerRepo.FindByAmount(ctx, agentID, amount)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get offers by amount: %w", err)
+	}
+
+	return offers, nil
+}
+
+// GetOffersByAmountRange retrieves offers within amount range
+func (s *OfferService) GetOffersByAmountRange(ctx context.Context, agentID int64, minAmount, maxAmount float64) ([]offer.AgentOffer, error) {
+	if minAmount < 0 {
+		return nil, fmt.Errorf("minimum amount cannot be negative")
+	}
+	if maxAmount < minAmount {
+		return nil, fmt.Errorf("maximum amount must be greater than or equal to minimum amount")
+	}
+
+	offers, err := s.offerRepo.FindByAmountRange(ctx, agentID, minAmount, maxAmount)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get offers by amount range: %w", err)
+	}
+
+	return offers, nil
+}
+
+// GetOffersByTypeAndAmount retrieves offers by type and amount
+func (s *OfferService) GetOffersByTypeAndAmount(ctx context.Context, agentID int64, offerType offer.OfferType, amount float64) ([]offer.AgentOffer, error) {
+	if amount <= 0 {
+		return nil, fmt.Errorf("amount must be greater than 0")
+	}
+
+	offers, err := s.offerRepo.FindByTypeAndAmount(ctx, agentID, offerType, amount)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get offers by type and amount: %w", err)
+	}
+
+	return offers, nil
+}
+
+
+// GetOfferByPrice retrieves a single offer by price
+func (s *OfferService) GetOfferByPrice(ctx context.Context, agentID int64, price float64) (*offer.AgentOffer, error) {
+	if price <= 0 {
+		return nil, fmt.Errorf("price must be greater than 0")
+	}
+
+	o, err := s.offerRepo.FindByPrice(ctx, agentID, price)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get offer by price: %w", err)
+	}
+
+	return o, nil
+}
+
+// GetOfferByPriceAndType retrieves a single offer by price and type
+func (s *OfferService) GetOfferByPriceAndType(ctx context.Context, agentID int64, price float64, offerType offer.OfferType) (*offer.AgentOffer, error) {
+	if price <= 0 {
+		return nil, fmt.Errorf("price must be greater than 0")
+	}
+
+	o, err := s.offerRepo.FindByPriceAndType(ctx, agentID, price, offerType)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get offer by price and type: %w", err)
+	}
+
+	return o, nil
+}

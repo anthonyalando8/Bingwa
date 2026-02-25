@@ -490,3 +490,192 @@ func (r *AgentOfferRepository) GetFeaturedOffers(ctx context.Context, agentID in
 
 	return offers, nil
 }
+
+// FindByAmount retrieves offers by amount (exact match or range)
+func (r *AgentOfferRepository) FindByAmount(ctx context.Context, agentID int64, amount float64) ([]offer.AgentOffer, error) {
+	query := `
+		SELECT id, agent_identity_id, offer_code, name, description, type, amount, units,
+		       price, currency, discount_percentage, validity_days, validity_label,
+		       ussd_code_template, ussd_processing_type, ussd_expected_response, ussd_error_pattern,
+		       is_featured, is_recurring, max_purchases_per_customer,
+		       status, available_from, available_until, tags, metadata,
+		       created_at, updated_at, deleted_at
+		FROM agent_offers
+		WHERE agent_identity_id = $1 AND amount = $2 AND deleted_at IS NULL
+		ORDER BY created_at DESC
+	`
+
+	rows, err := r.db.Query(ctx, query, agentID, amount)
+	if err != nil {
+		return nil, fmt.Errorf("failed to find offers by amount: %w", err)
+	}
+	defer rows.Close()
+
+	offers := []offer.AgentOffer{}
+	for rows.Next() {
+		o, err := r.scanOfferRow(rows)
+		if err != nil {
+			return nil, fmt.Errorf("failed to scan offer: %w", err)
+		}
+		offers = append(offers, *o)
+	}
+
+	// Load primary USSD codes for all offers
+	for i := range offers {
+		if err := r.loadPrimaryUSSDCode(ctx, &offers[i]); err != nil {
+			// Log but don't fail
+			continue
+		}
+	}
+
+	return offers, nil
+}
+
+// FindByAmountRange retrieves offers within an amount range
+func (r *AgentOfferRepository) FindByAmountRange(ctx context.Context, agentID int64, minAmount, maxAmount float64) ([]offer.AgentOffer, error) {
+	query := `
+		SELECT id, agent_identity_id, offer_code, name, description, type, amount, units,
+		       price, currency, discount_percentage, validity_days, validity_label,
+		       ussd_code_template, ussd_processing_type, ussd_expected_response, ussd_error_pattern,
+		       is_featured, is_recurring, max_purchases_per_customer,
+		       status, available_from, available_until, tags, metadata,
+		       created_at, updated_at, deleted_at
+		FROM agent_offers
+		WHERE agent_identity_id = $1 AND amount >= $2 AND amount <= $3 AND deleted_at IS NULL
+		ORDER BY amount ASC, created_at DESC
+	`
+
+	rows, err := r.db.Query(ctx, query, agentID, minAmount, maxAmount)
+	if err != nil {
+		return nil, fmt.Errorf("failed to find offers by amount range: %w", err)
+	}
+	defer rows.Close()
+
+	offers := []offer.AgentOffer{}
+	for rows.Next() {
+		o, err := r.scanOfferRow(rows)
+		if err != nil {
+			return nil, fmt.Errorf("failed to scan offer: %w", err)
+		}
+		offers = append(offers, *o)
+	}
+
+	// Load primary USSD codes for all offers
+	for i := range offers {
+		if err := r.loadPrimaryUSSDCode(ctx, &offers[i]); err != nil {
+			// Log but don't fail
+			continue
+		}
+	}
+
+	return offers, nil
+}
+
+// FindByTypeAndAmount retrieves offers by type and amount (more specific)
+func (r *AgentOfferRepository) FindByTypeAndAmount(ctx context.Context, agentID int64, offerType offer.OfferType, amount float64) ([]offer.AgentOffer, error) {
+	query := `
+		SELECT id, agent_identity_id, offer_code, name, description, type, amount, units,
+		       price, currency, discount_percentage, validity_days, validity_label,
+		       ussd_code_template, ussd_processing_type, ussd_expected_response, ussd_error_pattern,
+		       is_featured, is_recurring, max_purchases_per_customer,
+		       status, available_from, available_until, tags, metadata,
+		       created_at, updated_at, deleted_at
+		FROM agent_offers
+		WHERE agent_identity_id = $1 AND type = $2 AND amount = $3 AND deleted_at IS NULL
+		ORDER BY created_at DESC
+	`
+
+	rows, err := r.db.Query(ctx, query, agentID, offerType, amount)
+	if err != nil {
+		return nil, fmt.Errorf("failed to find offers by type and amount: %w", err)
+	}
+	defer rows.Close()
+
+	offers := []offer.AgentOffer{}
+	for rows.Next() {
+		o, err := r.scanOfferRow(rows)
+		if err != nil {
+			return nil, fmt.Errorf("failed to scan offer: %w", err)
+		}
+		offers = append(offers, *o)
+	}
+
+	// Load primary USSD codes for all offers
+	for i := range offers {
+		if err := r.loadPrimaryUSSDCode(ctx, &offers[i]); err != nil {
+			// Log but don't fail
+			continue
+		}
+	}
+
+	return offers, nil
+}
+
+
+// Add to internal/repository/postgres/agent_offer_repository.go
+
+// FindByPrice retrieves a single offer by price (returns first match)
+func (r *AgentOfferRepository) FindByPrice(ctx context.Context, agentID int64, price float64) (*offer.AgentOffer, error) {
+	query := `
+		SELECT id, agent_identity_id, offer_code, name, description, type, amount, units,
+		       price, currency, discount_percentage, validity_days, validity_label,
+		       ussd_code_template, ussd_processing_type, ussd_expected_response, ussd_error_pattern,
+		       is_featured, is_recurring, max_purchases_per_customer,
+		       status, available_from, available_until, tags, metadata,
+		       created_at, updated_at, deleted_at
+		FROM agent_offers
+		WHERE agent_identity_id = $1 AND price = $2 AND deleted_at IS NULL
+		ORDER BY created_at DESC
+		LIMIT 1
+	`
+
+	row := r.db.QueryRow(ctx, query, agentID, price)
+	o, err := r.scanOfferRow(row)
+
+	if err != nil {
+		if err.Error() == "failed to scan offer row: no rows in result set" {
+			return nil, xerrors.ErrNotFound
+		}
+		return nil, fmt.Errorf("failed to find offer by price: %w", err)
+	}
+
+	// Load primary USSD code
+	if err := r.loadPrimaryUSSDCode(ctx, o); err != nil {
+		// Log but don't fail
+	}
+
+	return o, nil
+}
+
+// FindByPriceAndType retrieves a single offer by price and type (more specific)
+func (r *AgentOfferRepository) FindByPriceAndType(ctx context.Context, agentID int64, price float64, offerType offer.OfferType) (*offer.AgentOffer, error) {
+	query := `
+		SELECT id, agent_identity_id, offer_code, name, description, type, amount, units,
+		       price, currency, discount_percentage, validity_days, validity_label,
+		       ussd_code_template, ussd_processing_type, ussd_expected_response, ussd_error_pattern,
+		       is_featured, is_recurring, max_purchases_per_customer,
+		       status, available_from, available_until, tags, metadata,
+		       created_at, updated_at, deleted_at
+		FROM agent_offers
+		WHERE agent_identity_id = $1 AND price = $2 AND type = $3 AND deleted_at IS NULL
+		ORDER BY created_at DESC
+		LIMIT 1
+	`
+
+	row := r.db.QueryRow(ctx, query, agentID, price, offerType)
+	o, err := r.scanOfferRow(row)
+
+	if err != nil {
+		if err.Error() == "failed to scan offer row: no rows in result set" {
+			return nil, xerrors.ErrNotFound
+		}
+		return nil, fmt.Errorf("failed to find offer by price and type: %w", err)
+	}
+
+	// Load primary USSD code
+	if err := r.loadPrimaryUSSDCode(ctx, o); err != nil {
+		// Log but don't fail
+	}
+
+	return o, nil
+}

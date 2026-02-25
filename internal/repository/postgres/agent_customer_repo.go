@@ -3,7 +3,6 @@ package postgres
 
 import (
 	"context"
-	"database/sql"
 	"encoding/json"
 	"fmt"
 	"strings"
@@ -24,6 +23,33 @@ func NewAgentCustomerRepository(db *pgxpool.Pool) *AgentCustomerRepository {
 	return &AgentCustomerRepository{db: db}
 }
 
+// scanCustomerRow is a helper function to scan a single customer row
+func (r *AgentCustomerRepository) scanCustomerRow(scanner interface {
+	Scan(dest ...interface{}) error
+}) (*customer.AgentCustomer, error) {
+	var c customer.AgentCustomer
+	var metadataJSON []byte
+
+	err := scanner.Scan(
+		&c.ID, &c.AgentIdentityID, &c.CustomerReference, &c.FullName, &c.PhoneNumber,
+		&c.AltPhoneNumber, &c.Email, &c.IsActive, &c.IsVerified, &c.VerifiedAt,
+		&c.Notes, &c.Tags, &metadataJSON, &c.CreatedAt, &c.UpdatedAt, &c.DeletedAt,
+	)
+
+	if err != nil {
+		return nil, fmt.Errorf("failed to scan customer row: %w", err)
+	}
+
+	// Unmarshal metadata
+	if len(metadataJSON) > 0 {
+		if err := json.Unmarshal(metadataJSON, &c.Metadata); err != nil {
+			return nil, fmt.Errorf("failed to unmarshal metadata: %w", err)
+		}
+	}
+
+	return &c, nil
+}
+
 // Create creates a new agent customer
 func (r *AgentCustomerRepository) Create(ctx context.Context, c *customer.AgentCustomer) error {
 	query := `
@@ -42,6 +68,10 @@ func (r *AgentCustomerRepository) Create(ctx context.Context, c *customer.AgentC
 		if err != nil {
 			return fmt.Errorf("failed to marshal metadata: %w", err)
 		}
+	}
+
+	if c.Tags == nil {
+		c.Tags = []string{}
 	}
 
 	err = r.db.QueryRow(
@@ -67,30 +97,17 @@ func (r *AgentCustomerRepository) FindByID(ctx context.Context, id int64) (*cust
 		WHERE id = $1 AND deleted_at IS NULL
 	`
 
-	var c customer.AgentCustomer
-	var metadataJSON []byte
+	row := r.db.QueryRow(ctx, query, id)
+	c, err := r.scanCustomerRow(row)
 
-	err := r.db.QueryRow(ctx, query, id).Scan(
-		&c.ID, &c.AgentIdentityID, &c.CustomerReference, &c.FullName, &c.PhoneNumber,
-		&c.AltPhoneNumber, &c.Email, &c.IsActive, &c.IsVerified, &c.VerifiedAt,
-		&c.Notes, &c.Tags, &metadataJSON, &c.CreatedAt, &c.UpdatedAt, &c.DeletedAt,
-	)
-
-	if err == sql.ErrNoRows {
-		return nil, xerrors.ErrNotFound
-	}
 	if err != nil {
+		if err.Error() == "failed to scan customer row: no rows in result set" {
+			return nil, xerrors.ErrNotFound
+		}
 		return nil, fmt.Errorf("failed to find customer: %w", err)
 	}
 
-	// Unmarshal metadata
-	if len(metadataJSON) > 0 {
-		if err := json.Unmarshal(metadataJSON, &c.Metadata); err != nil {
-			return nil, fmt.Errorf("failed to unmarshal metadata: %w", err)
-		}
-	}
-
-	return &c, nil
+	return c, nil
 }
 
 // FindByReference retrieves a customer by reference
@@ -103,30 +120,17 @@ func (r *AgentCustomerRepository) FindByReference(ctx context.Context, reference
 		WHERE customer_reference = $1 AND deleted_at IS NULL
 	`
 
-	var c customer.AgentCustomer
-	var metadataJSON []byte
+	row := r.db.QueryRow(ctx, query, reference)
+	c, err := r.scanCustomerRow(row)
 
-	err := r.db.QueryRow(ctx, query, reference).Scan(
-		&c.ID, &c.AgentIdentityID, &c.CustomerReference, &c.FullName, &c.PhoneNumber,
-		&c.AltPhoneNumber, &c.Email, &c.IsActive, &c.IsVerified, &c.VerifiedAt,
-		&c.Notes, &c.Tags, &metadataJSON, &c.CreatedAt, &c.UpdatedAt, &c.DeletedAt,
-	)
-
-	if err == sql.ErrNoRows {
-		return nil, xerrors.ErrNotFound
-	}
 	if err != nil {
-		return nil, fmt.Errorf("failed to find customer: %w", err)
-	}
-
-	// Unmarshal metadata
-	if len(metadataJSON) > 0 {
-		if err := json.Unmarshal(metadataJSON, &c.Metadata); err != nil {
-			return nil, fmt.Errorf("failed to unmarshal metadata: %w", err)
+		if err.Error() == "failed to scan customer row: no rows in result set" {
+			return nil, xerrors.ErrNotFound
 		}
+		return nil, fmt.Errorf("failed to find customer by reference: %w", err)
 	}
 
-	return &c, nil
+	return c, nil
 }
 
 // FindByAgentAndPhone retrieves a customer by agent ID and phone number
@@ -139,30 +143,17 @@ func (r *AgentCustomerRepository) FindByAgentAndPhone(ctx context.Context, agent
 		WHERE agent_identity_id = $1 AND phone_number = $2 AND deleted_at IS NULL
 	`
 
-	var c customer.AgentCustomer
-	var metadataJSON []byte
+	row := r.db.QueryRow(ctx, query, agentID, phone)
+	c, err := r.scanCustomerRow(row)
 
-	err := r.db.QueryRow(ctx, query, agentID, phone).Scan(
-		&c.ID, &c.AgentIdentityID, &c.CustomerReference, &c.FullName, &c.PhoneNumber,
-		&c.AltPhoneNumber, &c.Email, &c.IsActive, &c.IsVerified, &c.VerifiedAt,
-		&c.Notes, &c.Tags, &metadataJSON, &c.CreatedAt, &c.UpdatedAt, &c.DeletedAt,
-	)
-
-	if err == sql.ErrNoRows {
-		return nil, xerrors.ErrNotFound
-	}
 	if err != nil {
-		return nil, fmt.Errorf("failed to find customer: %w", err)
-	}
-
-	// Unmarshal metadata
-	if len(metadataJSON) > 0 {
-		if err := json.Unmarshal(metadataJSON, &c.Metadata); err != nil {
-			return nil, fmt.Errorf("failed to unmarshal metadata: %w", err)
+		if err.Error() == "failed to scan customer row: no rows in result set" {
+			return nil, xerrors.ErrNotFound
 		}
+		return nil, fmt.Errorf("failed to find customer by phone: %w", err)
 	}
 
-	return &c, nil
+	return c, nil
 }
 
 // Update updates a customer
@@ -339,24 +330,11 @@ func (r *AgentCustomerRepository) List(ctx context.Context, agentID int64, filte
 
 	customers := []customer.AgentCustomer{}
 	for rows.Next() {
-		var c customer.AgentCustomer
-		var metadataJSON []byte
-
-		err := rows.Scan(
-			&c.ID, &c.AgentIdentityID, &c.CustomerReference, &c.FullName, &c.PhoneNumber,
-			&c.AltPhoneNumber, &c.Email, &c.IsActive, &c.IsVerified, &c.VerifiedAt,
-			&c.Notes, &c.Tags, &metadataJSON, &c.CreatedAt, &c.UpdatedAt, &c.DeletedAt,
-		)
+		c, err := r.scanCustomerRow(rows)
 		if err != nil {
-			return nil, 0, fmt.Errorf("failed to scan customer: %w", err)
+			return nil, 0, fmt.Errorf("failed to scan customer in list: %w", err)
 		}
-
-		// Unmarshal metadata
-		if len(metadataJSON) > 0 {
-			json.Unmarshal(metadataJSON, &c.Metadata)
-		}
-
-		customers = append(customers, c)
+		customers = append(customers, *c)
 	}
 
 	return customers, total, nil

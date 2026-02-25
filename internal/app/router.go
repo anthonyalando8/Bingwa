@@ -145,6 +145,13 @@ func SetupRouter(r *gin.Engine, logger *zap.Logger, h *Handlers) {
 		// Get by identifiers
 		offers.GET("/:id", h.OfferHandler.GetOffer)
 		offers.GET("/code/:code", h.OfferHandler.GetOfferByCode)
+		offers.GET("/by-amount", h.OfferHandler.GetOffersByAmount) // ?amount=5
+		offers.GET("/by-amount-range", h.OfferHandler.GetOffersByAmountRange) // ?min_amount=1&max_amount=10
+		offers.GET("/by-type-and-amount", h.OfferHandler.GetOffersByTypeAndAmount) // ?type=data&amount=5
+
+		// Get by price (new)
+		offers.GET("/by-price", h.OfferHandler.GetOfferByPrice) // ?price=500
+		offers.GET("/by-price-and-type", h.OfferHandler.GetOfferByPriceAndType) // ?price=500&type=data
 		
 		// Create, update, delete
 		offers.POST("", h.OfferHandler.CreateOffer)

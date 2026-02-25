@@ -24,6 +24,7 @@ const (
 	StatusExpired   SubscriptionStatus = "expired"
 	StatusCancelled SubscriptionStatus = "cancelled"
 	StatusSuspended SubscriptionStatus = "suspended"
+	StatusPaused	SubscriptionStatus = "paused"
 )
 
 type SubscriptionPlan struct {
