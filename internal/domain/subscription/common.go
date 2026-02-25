@@ -1,0 +1,3 @@
+package subscription
+
+type SubscriptionStatus string

@@ -1,0 +1,31 @@
+version: '3.9'
+services:
+  redis-bingwa:
+    image: redis:7
+    container_name: redis-bingwa
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--appendonly", "yes"]
+    # [
+    #   "redis-server",
+    #   "--cluster-enabled", "yes",
+    #   "--cluster-config-file", "nodes.conf",
+    #   "--cluster-node-timeout", "5000",
+    #   "--appendonly", "yes"
+    # ]
+
+  bingwa:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bingwa
+    env_file:
+      - .env
+    volumes:
+      - ./secrets:/app/secrets:ro
+      - ./static:/app/static:ro
+    depends_on:
+      - redis-bingwa
+    ports:
+      - "8000:8000"

@@ -1,0 +1,873 @@
+{
+  "info": {
+    "_postman_id": "8c9f2b3a-7d4e-4c8f-a5e6-92cd7e1f3a4b",
+    "name": "Bingwa - Business",
+    "description": "Complete business logic API including subscription plans, customers, offers, configurations, campaigns, transactions, schedules, and agent subscriptions",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Subscription Plans",
+      "item": [
+        {
+          "name": "Public Plans",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/plans/public",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "plans", "public"]
+            }
+          }
+        },
+        {
+          "name": "Compare Plans",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/plans/compare?plan_ids=1,2,3",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "plans", "compare"],
+              "query": [{ "key": "plan_ids", "value": "1,2,3" }]
+            }
+          }
+        },
+        {
+          "name": "List Plans",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/plans?page=1&page_size=20",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "plans"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "page_size", "value": "20" },
+                { "key": "status", "value": "active", "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Plan",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/plans/:id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "plans", ":id"],
+              "variable": [{ "key": "id", "value": "1" }]
+            }
+          }
+        },
+        {
+          "name": "Get Plan by Code",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/plans/code/:code",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "plans", "code", ":code"],
+              "variable": [{ "key": "code", "value": "BASIC-MONTHLY" }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "👥 Customers",
+      "item": [
+        {
+          "name": "List Customers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/customers?page=1&page_size=20",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "customers"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "page_size", "value": "20" },
+                { "key": "status", "value": "active", "disabled": true },
+                { "key": "search", "value": "john", "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Customer",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone_number\": \"0722123456\",\n  \"full_name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"id_number\": \"12345678\",\n  \"tags\": [\"premium\", \"loyal\"]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/customers",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "customers"]
+            }
+          }
+        },
+        {
+          "name": "Get Customer",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/customers/:id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "customers", ":id"],
+              "variable": [{ "key": "id", "value": "1" }]
+            }
+          }
+        },
+        {
+          "name": "Update Customer",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"full_name\": \"John Doe Updated\",\n  \"email\": \"john.updated@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/customers/:id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "customers", ":id"],
+              "variable": [{ "key": "id", "value": "1" }]
+            }
+          }
+        },
+        {
+          "name": "Search Customers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/customers/search?q=john",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "customers", "search"],
+              "query": [{ "key": "q", "value": "john" }]
+            }
+          }
+        },
+        {
+          "name": "Get Customer Stats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/customers/stats",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "customers", "stats"]
+            }
+          }
+        },
+        {
+          "name": "Bulk Import Customers",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customers\": [\n    {\n      \"phone_number\": \"0722111111\",\n      \"full_name\": \"Customer 1\"\n    },\n    {\n      \"phone_number\": \"0722222222\",\n      \"full_name\": \"Customer 2\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/customers/bulk-import",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "customers", "bulk-import"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Offers",
+      "item": [
+        {
+          "name": "List Offers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/offers?page=1&page_size=20",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "offers"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "page_size", "value": "20" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Offer",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"5GB Data Bundle\",\n  \"description\": \"5GB valid for 30 days\",\n  \"type\": \"data\",\n  \"amount\": 5,\n  \"units\": \"GB\",\n  \"price\": 500,\n  \"currency\": \"KES\",\n  \"validity_days\": 30,\n  \"ussd_code_template\": \"*181*{phone}*500#\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/offers",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "offers"]
+            }
+          }
+        },
+        {
+          "name": "Get Offer",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/offers/:id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "offers", ":id"],
+              "variable": [{ "key": "id", "value": "1" }]
+            }
+          }
+        },
+        {
+          "name": "Generate USSD Code",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/offers/:id/ussd-code?phone=0722123456",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "offers", ":id", "ussd-code"],
+              "query": [{ "key": "phone", "value": "0722123456" }],
+              "variable": [{ "key": "id", "value": "1" }]
+            }
+          }
+        },
+        {
+          "name": "Clone Offer",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"new_name\": \"10GB Data Bundle\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/offers/:id/clone",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "offers", ":id", "clone"],
+              "variable": [{ "key": "id", "value": "1" }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Configurations",
+      "item": [
+        {
+          "name": "Create Config",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"config_key\": \"ussd_timeout\",\n  \"config_value\": {\n    \"timeout_seconds\": 30\n  },\n  \"description\": \"USSD timeout configuration\",\n  \"is_global\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/configs",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "configs"]
+            }
+          }
+        },
+        {
+          "name": "List Configs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/configs?page=1&page_size=20",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "configs"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "page_size", "value": "20" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Notification Config",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/configs/types/notifications",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "configs", "types", "notifications"]
+            }
+          }
+        },
+        {
+          "name": "Set Notification Config",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"enabled\": true,\n  \"sound\": true,\n  \"vibration\": false,\n  \"email_alerts\": true,\n  \"push_enabled\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/configs/types/notifications",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "configs", "types", "notifications"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Campaigns",
+      "item": [
+        {
+          "name": "List Campaigns",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/campaigns?page=1&page_size=20",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "campaigns"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "page_size", "value": "20" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Active Campaigns",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/campaigns/active",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "campaigns", "active"]
+            }
+          }
+        },
+        {
+          "name": "Validate Campaign",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"promotional_code\": \"NEWYEAR50\",\n  \"plan_id\": 1,\n  \"user_type\": \"new_user\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/campaigns/validate",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "campaigns", "validate"]
+            }
+          }
+        },
+        {
+          "name": "Check Availability",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/campaigns/check-availability?code=NEWYEAR50",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "campaigns", "check-availability"],
+              "query": [{ "key": "code", "value": "NEWYEAR50" }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Transactions",
+      "item": [
+        {
+          "name": "Create Offer Request",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"offer_id\": 1,\n  \"customer_phone\": \"0722123456\",\n  \"customer_name\": \"John Doe\",\n  \"payment_method\": \"mpesa\",\n  \"amount_paid\": 500,\n  \"currency\": \"KES\",\n  \"mpesa_transaction_id\": \"QA12345678\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/transactions/requests",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "transactions", "requests"]
+            }
+          }
+        },
+        {
+          "name": "Get Pending Requests",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/transactions/requests/pending?limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "transactions", "requests", "pending"],
+              "query": [{ "key": "limit", "value": "10" }]
+            }
+          }
+        },
+        {
+          "name": "Complete Offer Request",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ussd_response\": \"Successfully purchased 5GB bundle\",\n  \"ussd_session_id\": \"SESSION123\",\n  \"ussd_processing_time\": 3500,\n  \"status\": \"success\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/transactions/requests/:id/complete",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "transactions", "requests", ":id", "complete"],
+              "variable": [{ "key": "id", "value": "1" }]
+            }
+          }
+        },
+        {
+          "name": "Retry Failed Request",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/transactions/requests/:id/retry",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "transactions", "requests", ":id", "retry"],
+              "variable": [{ "key": "id", "value": "1" }]
+            }
+          }
+        },
+        {
+          "name": "Get Transaction Stats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/transactions/stats",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "transactions", "stats"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Schedules",
+      "item": [
+        {
+          "name": "Create Scheduled Offer",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"offer_id\": 1,\n  \"customer_phone\": \"0722123456\",\n  \"scheduled_time\": \"2024-01-15T08:00:00Z\",\n  \"auto_renew\": true,\n  \"renewal_period\": \"monthly\",\n  \"renewal_limit\": 12\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/schedules",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "schedules"]
+            }
+          }
+        },
+        {
+          "name": "Get Due Schedules",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/schedules/due",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "schedules", "due"]
+            }
+          }
+        },
+        {
+          "name": "Execute Schedule",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ussd_response\": \"Successfully renewed bundle\",\n  \"ussd_session_id\": \"SESSION456\",\n  \"ussd_processing_time\": 4000,\n  \"status\": \"success\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/schedules/:id/execute",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "schedules", ":id", "execute"],
+              "variable": [{ "key": "id", "value": "1" }]
+            }
+          }
+        },
+        {
+          "name": "Get Schedule History",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/schedules/:id/history?page=1&page_size=20",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "schedules", ":id", "history"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "page_size", "value": "20" }
+              ],
+              "variable": [{ "key": "id", "value": "1" }]
+            }
+          }
+        },
+        {
+          "name": "Pause Schedule",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/schedules/:id/pause",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "schedules", ":id", "pause"],
+              "variable": [{ "key": "id", "value": "1" }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Agent Subscriptions",
+      "item": [
+        {
+          "name": "Create Subscription",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"subscription_plan_id\": 1,\n  \"promotional_code\": \"NEWYEAR50\",\n  \"auto_renew\": true,\n  \"amount_paid\": 1000,\n  \"currency\": \"KES\",\n  \"payment_reference\": \"QA12345678\",\n  \"payment_method\": \"mpesa\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/subscriptions",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "subscriptions"]
+            }
+          }
+        },
+        {
+          "name": "Get Active Subscription",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/subscriptions/active",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "subscriptions", "active"]
+            }
+          }
+        },
+        {
+          "name": "Renew Subscription",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount_paid\": 1000,\n  \"currency\": \"KES\",\n  \"payment_reference\": \"QA87654321\",\n  \"payment_method\": \"mpesa\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/subscriptions/renew",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "subscriptions", "renew"]
+            }
+          }
+        },
+        {
+          "name": "Get Usage",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/subscriptions/usage/current",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "subscriptions", "usage", "current"]
+            }
+          }
+        },
+        {
+          "name": "Check Access",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/subscriptions/access/check",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "subscriptions", "access", "check"]
+            }
+          }
+        },
+        {
+          "name": "Cancel Subscription",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"No longer needed\",\n  \"cancel_immediately\": false\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/subscriptions/:id/cancel",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "subscriptions", ":id", "cancel"],
+              "variable": [{ "key": "id", "value": "1" }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin - Plans",
+      "item": [
+        {
+          "name": "Create Plan",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Basic Plan\",\n  \"description\": \"Perfect for small businesses\",\n  \"price\": 1000,\n  \"currency\": \"KES\",\n  \"billing_usage\": 100,\n  \"billing_cycle\": \"monthly\",\n  \"max_offers\": 10,\n  \"max_customers\": 50,\n  \"is_public\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/admin/plans",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "admin", "plans"]
+            }
+          }
+        },
+        {
+          "name": "Update Plan",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Basic Plan Updated\",\n  \"price\": 1200\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/admin/plans/:id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "admin", "plans", ":id"],
+              "variable": [{ "key": "id", "value": "1" }]
+            }
+          }
+        },
+        {
+          "name": "Activate Plan",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/admin/plans/:id/activate",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "admin", "plans", ":id", "activate"],
+              "variable": [{ "key": "id", "value": "1" }]
+            }
+          }
+        },
+        {
+          "name": "Get Plan Stats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/admin/plans/stats",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "admin", "plans", "stats"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin - Campaigns",
+      "item": [
+        {
+          "name": "Create Campaign",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"New Year Sale\",\n  \"description\": \"50% off all plans\",\n  \"promotional_code\": \"NEWYEAR50\",\n  \"discount_type\": \"percentage\",\n  \"discount_value\": 50,\n  \"start_date\": \"2024-01-01T00:00:00Z\",\n  \"end_date\": \"2024-01-31T23:59:59Z\",\n  \"max_uses\": 1000,\n  \"applicable_plans\": [1, 2, 3]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/admin/campaigns",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "admin", "campaigns"]
+            }
+          }
+        },
+        {
+          "name": "Update Campaign",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"New Year Sale Extended\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/admin/campaigns/:id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "admin", "campaigns", ":id"],
+              "variable": [{ "key": "id", "value": "1" }]
+            }
+          }
+        },
+        {
+          "name": "Extend Campaign",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"days\": 7\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/admin/campaigns/:id/extend",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "admin", "campaigns", ":id", "extend"],
+              "variable": [{ "key": "id", "value": "1" }]
+            }
+          }
+        },
+        {
+          "name": "Get Campaign Stats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/admin/campaigns/stats",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "admin", "campaigns", "stats"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin - Subscriptions",
+      "item": [
+        {
+          "name": "List All Subscriptions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/admin/subscriptions?page=1&page_size=20",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "admin", "subscriptions"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "page_size", "value": "20" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Expiring Subscriptions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/admin/subscriptions/expiring?days=7",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "admin", "subscriptions", "expiring"],
+              "query": [{ "key": "days", "value": "7" }]
+            }
+          }
+        },
+        {
+          "name": "Deactivate Subscription",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/admin/subscriptions/:id/deactivate",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "admin", "subscriptions", ":id", "deactivate"],
+              "variable": [{ "key": "id", "value": "1" }]
+            }
+          }
+        },
+        {
+          "name": "Suspend Subscription",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/admin/subscriptions/:id/suspend",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "admin", "subscriptions", ":id", "suspend"],
+              "variable": [{ "key": "id", "value": "1" }]
+            }
+          }
+        },
+        {
+          "name": "Get Subscription Stats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/admin/subscriptions/stats",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "admin", "subscriptions", "stats"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{access_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "access_token",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
