@@ -3,7 +3,7 @@ package postgres
 
 import (
 	"context"
-	"database/sql"
+	//"database/sql"
 	"encoding/json"
 	"fmt"
 	"strings"
@@ -12,6 +12,7 @@ import (
 	"bingwa-service/internal/domain/offer"
 	xerrors "bingwa-service/internal/pkg/errors"
 
+	//"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/lib/pq"
 )
@@ -28,6 +29,54 @@ func NewAgentOfferRepository(db *pgxpool.Pool, ussdCodeRepo *OfferUSSDCodeReposi
 		ussdCodeRepo: ussdCodeRepo,
 		dbWrapper:    dbWrapper,
 	}
+}
+
+// scanOfferRow is a helper function to scan a single offer row
+func (r *AgentOfferRepository) scanOfferRow(scanner interface {
+	Scan(dest ...interface{}) error
+}) (*offer.AgentOffer, error) {
+	var o offer.AgentOffer
+	var metadataJSON []byte
+	var tags []string
+
+	err := scanner.Scan(
+		&o.ID, &o.AgentIdentityID, &o.OfferCode, &o.Name, &o.Description, &o.Type, &o.Amount, &o.Units,
+		&o.Price, &o.Currency, &o.DiscountPercentage, &o.ValidityDays, &o.ValidityLabel,
+		&o.USSDCodeTemplate, &o.USSDProcessingType, &o.USSDExpectedResponse, &o.USSDErrorPattern,
+		&o.IsFeatured, &o.IsRecurring, &o.MaxPurchasesPerCustomer,
+		&o.Status, &o.AvailableFrom, &o.AvailableUntil, pq.Array(&tags), &metadataJSON,
+		&o.CreatedAt, &o.UpdatedAt, &o.DeletedAt,
+	)
+
+	if err != nil {
+		return nil, fmt.Errorf("failed to scan offer row: %w", err)
+	}
+
+	// Convert []string to pq.StringArray
+	o.Tags = pq.StringArray(tags)
+
+	// Unmarshal metadata
+	if len(metadataJSON) > 0 {
+		if err := json.Unmarshal(metadataJSON, &o.Metadata); err != nil {
+			return nil, fmt.Errorf("failed to unmarshal metadata: %w", err)
+		}
+	}
+
+	return &o, nil
+}
+
+// loadPrimaryUSSDCode loads the primary USSD code for an offer
+func (r *AgentOfferRepository) loadPrimaryUSSDCode(ctx context.Context, o *offer.AgentOffer) error {
+	primaryCode, err := r.ussdCodeRepo.GetPrimaryUSSDCode(ctx, o.ID)
+	if err != nil && err != xerrors.ErrNotFound {
+		return fmt.Errorf("failed to load primary USSD code: %w", err)
+	}
+	
+	if primaryCode != nil {
+		o.PrimaryUSSDCode = primaryCode
+	}
+	
+	return nil
 }
 
 // Create creates a new agent offer (now with transaction support for USSD code)
@@ -65,7 +114,7 @@ func (r *AgentOfferRepository) Create(ctx context.Context, o *offer.AgentOffer) 
 		o.Price, o.Currency, o.DiscountPercentage, o.ValidityDays, o.ValidityLabel,
 		o.USSDCodeTemplate, o.USSDProcessingType, o.USSDExpectedResponse, o.USSDErrorPattern,
 		o.IsFeatured, o.IsRecurring, o.MaxPurchasesPerCustomer,
-		o.Status, o.AvailableFrom, o.AvailableUntil, o.Tags, metadataJSON,
+		o.Status, o.AvailableFrom, o.AvailableUntil, pq.Array(o.Tags), metadataJSON,
 	).Scan(&o.ID, &o.CreatedAt, &o.UpdatedAt)
 
 	if err != nil {
@@ -74,11 +123,11 @@ func (r *AgentOfferRepository) Create(ctx context.Context, o *offer.AgentOffer) 
 
 	// Create initial USSD code (priority 1)
 	ussdCode := &offer.OfferUSSDCode{
-		OfferID:        o.ID,
-		USSDCode:       o.USSDCodeTemplate,
-		Priority:       1,
-		IsActive:       true,
-		ProcessingType: o.USSDProcessingType,
+		OfferID:          o.ID,
+		USSDCode:         o.USSDCodeTemplate,
+		Priority:         1,
+		IsActive:         true,
+		ProcessingType:   o.USSDProcessingType,
 		ExpectedResponse: o.USSDExpectedResponse,
 		ErrorPattern:     o.USSDErrorPattern,
 	}
@@ -108,43 +157,23 @@ func (r *AgentOfferRepository) FindByID(ctx context.Context, id int64) (*offer.A
 		WHERE id = $1 AND deleted_at IS NULL
 	`
 
-	var o offer.AgentOffer
-	var metadataJSON []byte
-
-	err := r.db.QueryRow(ctx, query, id).Scan(
-		&o.ID, &o.AgentIdentityID, &o.OfferCode, &o.Name, &o.Description, &o.Type, &o.Amount, &o.Units,
-		&o.Price, &o.Currency, &o.DiscountPercentage, &o.ValidityDays, &o.ValidityLabel,
-		&o.USSDCodeTemplate, &o.USSDProcessingType, &o.USSDExpectedResponse, &o.USSDErrorPattern,
-		&o.IsFeatured, &o.IsRecurring, &o.MaxPurchasesPerCustomer,
-		&o.Status, &o.AvailableFrom, &o.AvailableUntil, &o.Tags, &metadataJSON,
-		&o.CreatedAt, &o.UpdatedAt, &o.DeletedAt,
-	)
-
-	if err == sql.ErrNoRows {
-		return nil, xerrors.ErrNotFound
-	}
+	row := r.db.QueryRow(ctx, query, id)
+	o, err := r.scanOfferRow(row)
+	
 	if err != nil {
+		if err.Error() == "failed to scan offer row: no rows in result set" {
+			return nil, xerrors.ErrNotFound
+		}
 		return nil, fmt.Errorf("failed to find offer: %w", err)
 	}
 
-	// Unmarshal metadata
-	if len(metadataJSON) > 0 {
-		if err := json.Unmarshal(metadataJSON, &o.Metadata); err != nil {
-			return nil, fmt.Errorf("failed to unmarshal metadata: %w", err)
-		}
-	}
-
 	// Load primary USSD code
-	primaryCode, err := r.ussdCodeRepo.GetPrimaryUSSDCode(ctx, o.ID)
-	if err != nil && err != xerrors.ErrNotFound {
+	if err := r.loadPrimaryUSSDCode(ctx, o); err != nil {
 		// Log but don't fail
 		// In production, use logger here
 	}
-	if primaryCode != nil {
-		o.PrimaryUSSDCode = primaryCode
-	}
 
-	return &o, nil
+	return o, nil
 }
 
 // FindByOfferCode retrieves an offer by offer code (now loads primary USSD code)
@@ -160,42 +189,22 @@ func (r *AgentOfferRepository) FindByOfferCode(ctx context.Context, offerCode st
 		WHERE offer_code = $1 AND deleted_at IS NULL
 	`
 
-	var o offer.AgentOffer
-	var metadataJSON []byte
-
-	err := r.db.QueryRow(ctx, query, offerCode).Scan(
-		&o.ID, &o.AgentIdentityID, &o.OfferCode, &o.Name, &o.Description, &o.Type, &o.Amount, &o.Units,
-		&o.Price, &o.Currency, &o.DiscountPercentage, &o.ValidityDays, &o.ValidityLabel,
-		&o.USSDCodeTemplate, &o.USSDProcessingType, &o.USSDExpectedResponse, &o.USSDErrorPattern,
-		&o.IsFeatured, &o.IsRecurring, &o.MaxPurchasesPerCustomer,
-		&o.Status, &o.AvailableFrom, &o.AvailableUntil, &o.Tags, &metadataJSON,
-		&o.CreatedAt, &o.UpdatedAt, &o.DeletedAt,
-	)
-
-	if err == sql.ErrNoRows {
-		return nil, xerrors.ErrNotFound
-	}
+	row := r.db.QueryRow(ctx, query, offerCode)
+	o, err := r.scanOfferRow(row)
+	
 	if err != nil {
-		return nil, fmt.Errorf("failed to find offer: %w", err)
-	}
-
-	// Unmarshal metadata
-	if len(metadataJSON) > 0 {
-		if err := json.Unmarshal(metadataJSON, &o.Metadata); err != nil {
-			return nil, fmt.Errorf("failed to unmarshal metadata: %w", err)
+		if err.Error() == "failed to scan offer row: no rows in result set" {
+			return nil, xerrors.ErrNotFound
 		}
+		return nil, fmt.Errorf("failed to find offer by code: %w", err)
 	}
 
 	// Load primary USSD code
-	primaryCode, err := r.ussdCodeRepo.GetPrimaryUSSDCode(ctx, o.ID)
-	if err != nil && err != xerrors.ErrNotFound {
+	if err := r.loadPrimaryUSSDCode(ctx, o); err != nil {
 		// Log but don't fail
 	}
-	if primaryCode != nil {
-		o.PrimaryUSSDCode = primaryCode
-	}
 
-	return &o, nil
+	return o, nil
 }
 
 // Update updates an offer
@@ -226,7 +235,7 @@ func (r *AgentOfferRepository) Update(ctx context.Context, id int64, o *offer.Ag
 		o.Price, o.DiscountPercentage, o.ValidityDays, o.ValidityLabel,
 		o.USSDCodeTemplate, o.USSDProcessingType, o.USSDExpectedResponse, o.USSDErrorPattern,
 		o.IsFeatured, o.IsRecurring, o.MaxPurchasesPerCustomer,
-		o.AvailableFrom, o.AvailableUntil, o.Tags, metadataJSON, time.Now(), id,
+		o.AvailableFrom, o.AvailableUntil, pq.Array(o.Tags), metadataJSON, time.Now(), id,
 	)
 
 	if err != nil {
@@ -379,38 +388,18 @@ func (r *AgentOfferRepository) List(ctx context.Context, agentID int64, filters 
 
 	offers := []offer.AgentOffer{}
 	for rows.Next() {
-		var o offer.AgentOffer
-		var metadataJSON []byte
-
-		err := rows.Scan(
-			&o.ID, &o.AgentIdentityID, &o.OfferCode, &o.Name, &o.Description, &o.Type, &o.Amount, &o.Units,
-			&o.Price, &o.Currency, &o.DiscountPercentage, &o.ValidityDays, &o.ValidityLabel,
-			&o.USSDCodeTemplate, &o.USSDProcessingType, &o.USSDExpectedResponse, &o.USSDErrorPattern,
-			&o.IsFeatured, &o.IsRecurring, &o.MaxPurchasesPerCustomer,
-			&o.Status, &o.AvailableFrom, &o.AvailableUntil, &o.Tags, &metadataJSON,
-			&o.CreatedAt, &o.UpdatedAt, &o.DeletedAt,
-		)
+		o, err := r.scanOfferRow(rows)
 		if err != nil {
-			return nil, 0, fmt.Errorf("failed to scan offer: %w", err)
+			return nil, 0, fmt.Errorf("failed to scan offer in list: %w", err)
 		}
-
-		// Unmarshal metadata
-		if len(metadataJSON) > 0 {
-			json.Unmarshal(metadataJSON, &o.Metadata)
-		}
-
-		offers = append(offers, o)
+		offers = append(offers, *o)
 	}
 
 	// Load primary USSD codes for all offers
 	for i := range offers {
-		primaryCode, err := r.ussdCodeRepo.GetPrimaryUSSDCode(ctx, offers[i].ID)
-		if err != nil && err != xerrors.ErrNotFound {
+		if err := r.loadPrimaryUSSDCode(ctx, &offers[i]); err != nil {
 			// Log but don't fail
 			continue
-		}
-		if primaryCode != nil {
-			offers[i].PrimaryUSSDCode = primaryCode
 		}
 	}
 
@@ -478,37 +467,18 @@ func (r *AgentOfferRepository) GetFeaturedOffers(ctx context.Context, agentID in
 
 	offers := []offer.AgentOffer{}
 	for rows.Next() {
-		var o offer.AgentOffer
-		var metadataJSON []byte
-
-		err := rows.Scan(
-			&o.ID, &o.AgentIdentityID, &o.OfferCode, &o.Name, &o.Description, &o.Type, &o.Amount, &o.Units,
-			&o.Price, &o.Currency, &o.DiscountPercentage, &o.ValidityDays, &o.ValidityLabel,
-			&o.USSDCodeTemplate, &o.USSDProcessingType, &o.USSDExpectedResponse, &o.USSDErrorPattern,
-			&o.IsFeatured, &o.IsRecurring, &o.MaxPurchasesPerCustomer,
-			&o.Status, &o.AvailableFrom, &o.AvailableUntil, &o.Tags, &metadataJSON,
-			&o.CreatedAt, &o.UpdatedAt, &o.DeletedAt,
-		)
+		o, err := r.scanOfferRow(rows)
 		if err != nil {
-			return nil, fmt.Errorf("failed to scan offer: %w", err)
+			return nil, fmt.Errorf("failed to scan featured offer: %w", err)
 		}
-
-		if len(metadataJSON) > 0 {
-			json.Unmarshal(metadataJSON, &o.Metadata)
-		}
-
-		offers = append(offers, o)
+		offers = append(offers, *o)
 	}
 
 	// Load primary USSD codes for all offers
 	for i := range offers {
-		primaryCode, err := r.ussdCodeRepo.GetPrimaryUSSDCode(ctx, offers[i].ID)
-		if err != nil && err != xerrors.ErrNotFound {
+		if err := r.loadPrimaryUSSDCode(ctx, &offers[i]); err != nil {
 			// Log but don't fail
 			continue
-		}
-		if primaryCode != nil {
-			offers[i].PrimaryUSSDCode = primaryCode
 		}
 	}
 
