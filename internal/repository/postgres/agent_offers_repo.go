@@ -35,25 +35,22 @@ func NewAgentOfferRepository(db *pgxpool.Pool, ussdCodeRepo *OfferUSSDCodeReposi
 func (r *AgentOfferRepository) scanOfferRow(scanner interface {
 	Scan(dest ...interface{}) error
 }) (*offer.AgentOffer, error) {
+
 	var o offer.AgentOffer
 	var metadataJSON []byte
-	var tags []string
 
 	err := scanner.Scan(
 		&o.ID, &o.AgentIdentityID, &o.OfferCode, &o.Name, &o.Description, &o.Type, &o.Amount, &o.Units,
 		&o.Price, &o.Currency, &o.DiscountPercentage, &o.ValidityDays, &o.ValidityLabel,
 		&o.USSDCodeTemplate, &o.USSDProcessingType, &o.USSDExpectedResponse, &o.USSDErrorPattern,
 		&o.IsFeatured, &o.IsRecurring, &o.MaxPurchasesPerCustomer,
-		&o.Status, &o.AvailableFrom, &o.AvailableUntil, pq.Array(&tags), &metadataJSON,
+		&o.Status, &o.AvailableFrom, &o.AvailableUntil, &o.Tags, &metadataJSON,
 		&o.CreatedAt, &o.UpdatedAt, &o.DeletedAt,
 	)
 
 	if err != nil {
 		return nil, fmt.Errorf("failed to scan offer row: %w", err)
 	}
-
-	// Convert []string to pq.StringArray
-	o.Tags = pq.StringArray(tags)
 
 	// Unmarshal metadata
 	if len(metadataJSON) > 0 {
@@ -88,7 +85,6 @@ func (r *AgentOfferRepository) Create(ctx context.Context, o *offer.AgentOffer) 
 	}
 	defer tx.Rollback(ctx)
 
-	// Create offer
 	query := `
 		INSERT INTO agent_offers (
 			agent_identity_id, offer_code, name, description, type, amount, units,
@@ -96,9 +92,20 @@ func (r *AgentOfferRepository) Create(ctx context.Context, o *offer.AgentOffer) 
 			ussd_code_template, ussd_processing_type, ussd_expected_response, ussd_error_pattern,
 			is_featured, is_recurring, max_purchases_per_customer,
 			status, available_from, available_until, tags, metadata
-		) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24)
+		) VALUES (
+			$1,$2,$3,$4,$5,$6,$7,
+			$8,$9,$10,$11,$12,
+			$13,$14,$15,$16,
+			$17,$18,$19,
+			$20,$21,$22,$23,$24
+		)
 		RETURNING id, created_at, updated_at
 	`
+
+	// Ensure tags is not nil (optional but clean)
+	if o.Tags == nil {
+		o.Tags = []string{}
+	}
 
 	var metadataJSON []byte
 	if o.Metadata != nil {
@@ -114,14 +121,14 @@ func (r *AgentOfferRepository) Create(ctx context.Context, o *offer.AgentOffer) 
 		o.Price, o.Currency, o.DiscountPercentage, o.ValidityDays, o.ValidityLabel,
 		o.USSDCodeTemplate, o.USSDProcessingType, o.USSDExpectedResponse, o.USSDErrorPattern,
 		o.IsFeatured, o.IsRecurring, o.MaxPurchasesPerCustomer,
-		o.Status, o.AvailableFrom, o.AvailableUntil, pq.Array(o.Tags), metadataJSON,
+		o.Status, o.AvailableFrom, o.AvailableUntil, o.Tags, metadataJSON, // ✅ no pq.Array
 	).Scan(&o.ID, &o.CreatedAt, &o.UpdatedAt)
 
 	if err != nil {
 		return fmt.Errorf("failed to create offer: %w", err)
 	}
 
-	// Create initial USSD code (priority 1)
+	// Create initial USSD code
 	ussdCode := &offer.OfferUSSDCode{
 		OfferID:          o.ID,
 		USSDCode:         o.USSDCodeTemplate,
@@ -136,7 +143,6 @@ func (r *AgentOfferRepository) Create(ctx context.Context, o *offer.AgentOffer) 
 		return fmt.Errorf("failed to create USSD code: %w", err)
 	}
 
-	// Commit transaction
 	if err := tx.Commit(ctx); err != nil {
 		return fmt.Errorf("failed to commit transaction: %w", err)
 	}
@@ -235,7 +241,7 @@ func (r *AgentOfferRepository) Update(ctx context.Context, id int64, o *offer.Ag
 		o.Price, o.DiscountPercentage, o.ValidityDays, o.ValidityLabel,
 		o.USSDCodeTemplate, o.USSDProcessingType, o.USSDExpectedResponse, o.USSDErrorPattern,
 		o.IsFeatured, o.IsRecurring, o.MaxPurchasesPerCustomer,
-		o.AvailableFrom, o.AvailableUntil, pq.Array(o.Tags), metadataJSON, time.Now(), id,
+		o.AvailableFrom, o.AvailableUntil, o.Tags, metadataJSON, time.Now(), id,
 	)
 
 	if err != nil {

@@ -13,7 +13,6 @@ import (
 	xerrors "bingwa-service/internal/pkg/errors"
 	"bingwa-service/internal/repository/postgres"
 
-	"github.com/lib/pq"
 	"go.uber.org/zap"
 )
 
@@ -78,7 +77,7 @@ func (s *OfferService) CreateOffer(ctx context.Context, agentID int64, req *offe
 		IsFeatured:           req.IsFeatured,
 		IsRecurring:          req.IsRecurring,
 		Status:               offer.OfferStatusActive,
-		Tags:                 pq.StringArray(req.Tags),
+		Tags:                 req.Tags,
 		Metadata:             req.Metadata,
 	}
 
@@ -262,7 +261,7 @@ func (s *OfferService) UpdateOffer(ctx context.Context, agentID, offerID int64, 
 		o.AvailableUntil = sql.NullTime{Time: *req.AvailableUntil, Valid: true}
 	}
 	if req.Tags != nil {
-		o.Tags = pq.StringArray(req.Tags)
+		o.Tags = req.Tags
 	}
 	if req.Metadata != nil {
 		o.Metadata = req.Metadata

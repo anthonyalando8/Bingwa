@@ -4,8 +4,6 @@ package offer
 import (
 	"database/sql"
 	"time"
-
-	"github.com/lib/pq"
 )
 
 type OfferType string
@@ -84,7 +82,7 @@ type AgentOffer struct {
 	AvailableUntil sql.NullTime `json:"available_until,omitempty" db:"available_until"`
 
 	// Metadata
-	Tags     pq.StringArray         `json:"tags,omitempty" db:"tags"`
+	Tags     []string        `json:"tags,omitempty" db:"tags"`
 	Metadata map[string]interface{} `json:"metadata,omitempty" db:"metadata"`
 
 	// Timestamps
