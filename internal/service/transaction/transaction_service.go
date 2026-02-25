@@ -10,6 +10,10 @@ import (
 
 	"bingwa-service/internal/domain/transaction"
 	"bingwa-service/internal/repository/postgres"
+	offersvc "bingwa-service/internal/service/offer"
+	domainoffer "bingwa-service/internal/domain/offer"
+	customer "bingwa-service/internal/service/customer"
+	subsvc "bingwa-service/internal/service/subscription"
 
 	//"github.com/jackc/pgx/v5"
 	"go.uber.org/zap"
@@ -20,6 +24,9 @@ type TransactionService struct {
 	redemptionRepo *postgres.OfferRedemptionRepository
 	offerRepo      *postgres.AgentOfferRepository
 	customerRepo   *postgres.AgentCustomerRepository
+	offerSvc 		   *offersvc.OfferService
+	customerSvc        *customer.CustomerService
+	subService             *subsvc.SubscriptionService
 	db             *postgres.DB // For transaction management
 	logger         *zap.Logger
 	
@@ -32,6 +39,9 @@ func NewTransactionService(
 	redemptionRepo *postgres.OfferRedemptionRepository,
 	offerRepo *postgres.AgentOfferRepository,
 	customerRepo *postgres.AgentCustomerRepository,
+	offerSvc 		   *offersvc.OfferService,
+	customerSvc        *customer.CustomerService,
+	subService         *subsvc.SubscriptionService,
 	db *postgres.DB,
 	logger *zap.Logger,
 ) *TransactionService {
@@ -40,6 +50,9 @@ func NewTransactionService(
 		redemptionRepo:      redemptionRepo,
 		offerRepo:           offerRepo,
 		customerRepo:        customerRepo,
+		offerSvc:            offerSvc,
+		customerSvc:         customerSvc,
+		subService:          subService,
 		db:                  db,
 		logger:              logger,
 		requireSubscription: false, // Default: don't require subscription (can be configured)
@@ -70,7 +83,7 @@ func (s *TransactionService) CreateOfferRequest(ctx context.Context, agentID int
 	}
 
 	// Get or create customer
-	customerID, err := s.getOrCreateCustomer(ctx, agentID, input.CustomerPhone, input.CustomerName)
+	customerID, err := s.customerSvc.GetOrCreateCustomer(ctx, agentID, input.CustomerPhone)
 	if err != nil {
 		s.logger.Warn("failed to get/create customer", zap.Error(err))
 		// Continue without customer_id
@@ -91,7 +104,7 @@ func (s *TransactionService) CreateOfferRequest(ctx context.Context, agentID int
 
 	// Check subscription if required (only for non-completed requests)
 	if !isCompleted && s.requireSubscription {
-		hasSubscription, err := s.checkActiveSubscription(ctx, agentID)
+		hasSubscription, err := s.subService.CheckSubscriptionAccess(ctx, agentID)
 		if err != nil {
 			return nil, nil, fmt.Errorf("failed to check subscription: %w", err)
 		}
@@ -150,8 +163,16 @@ func (s *TransactionService) CreateOfferRequest(ctx context.Context, agentID int
 	}
 
 	// Generate USSD code
-	ussdCode := s.generateUSSDCode(offer, input.CustomerPhone)
-
+	ussdCodeInfo, err := s.generateUSSDCode(ctx, offer, input.CustomerPhone)
+	if err != nil {
+		s.logger.Error("failed to generate USSD code", zap.Error(err))
+		// Don't fail the transaction creation if USSD code generation fails
+		// Just log and continue
+	}
+	ussdCode := ussdCodeInfo.USSDCode
+	if ussdCode == "" {
+		ussdCode = offer.USSDCodeTemplate
+	}
 	// Calculate validity dates
 	validFrom := time.Now()
 	validUntil := validFrom.AddDate(0, 0, offer.ValidityDays)
@@ -173,9 +194,14 @@ func (s *TransactionService) CreateOfferRequest(ctx context.Context, agentID int
 		ValidUntil:          sql.NullTime{Time: validUntil, Valid: true},
 	}
 
+	if ussdCodeInfo != nil {
+		redemption.USSDCodeExecutionInfo = ussdCodeInfo
+	}
+
 	if customerID != nil {
 		redemption.CustomerID = sql.NullInt64{Int64: *customerID, Valid: true}
 	}
+
 
 	if isCompleted {
 		redemption.CompletedAt = sql.NullTime{Time: time.Now(), Valid: true}
@@ -515,32 +541,10 @@ func (s *TransactionService) generateRedemptionReference() string {
 }
 
 // generateUSSDCode generates USSD code from template
-func (s *TransactionService) generateUSSDCode(offer interface{}, phoneNumber string) string {
-	// This would use the offer's USSD template
-	// For now, return placeholder
-	return fmt.Sprintf("*181*%s#", phoneNumber)
+func (s *TransactionService) generateUSSDCode(ctx context.Context, offer *domainoffer.AgentOffer, phoneNumber string) (*domainoffer.USSDCodeExecutionInfo, error) {
+	return s.offerSvc.GetUSSDCodeForExecution(ctx, offer.AgentIdentityID, offer.ID, phoneNumber)
 }
 
-// getOrCreateCustomer gets existing customer or creates new one
-func (s *TransactionService) getOrCreateCustomer(ctx context.Context, agentID int64, phone, name string) (*int64, error) {
-	// Try to find existing customer
-	customer, err := s.customerRepo.FindByAgentAndPhone(ctx, agentID, phone)
-	if err == nil {
-		return &customer.ID, nil
-	}
-
-	// Customer doesn't exist, create new one
-	// This is simplified - in production you'd create properly
-	// For now, return nil (customer creation can be optional)
-	return nil, nil
-}
-
-// checkActiveSubscription checks if agent has active subscription
-func (s *TransactionService) checkActiveSubscription(ctx context.Context, agentID int64) (bool, error) {
-	// TODO: Implement subscription check
-	// Placeholder for now - always return true
-	return true, nil
-}
 
 // createFailedRequest creates a failed request when subscription check fails
 func (s *TransactionService) createFailedRequest(ctx context.Context, agentID int64, input *transaction.CreateOfferRequestInput, offer interface{}, customerID *int64, reason string) (*transaction.OfferRequest, *transaction.OfferRedemption, error) {

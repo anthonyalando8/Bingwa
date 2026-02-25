@@ -5,12 +5,16 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+
 	//"strings"
 	"time"
 
 	"bingwa-service/internal/domain/schedule"
 	"bingwa-service/internal/domain/transaction"
 	xerrors "bingwa-service/internal/pkg/errors"
+	"bingwa-service/internal/service/offer"
+	customer "bingwa-service/internal/service/customer"
+	domainoffer "bingwa-service/internal/domain/offer"
 	"bingwa-service/internal/repository/postgres"
 
 	"go.uber.org/zap"
@@ -22,7 +26,10 @@ type ScheduleService struct {
 	redemptionRepo     *postgres.OfferRedemptionRepository
 	offerRepo          *postgres.AgentOfferRepository
 	customerRepo       *postgres.AgentCustomerRepository
+	customerSvc        *customer.CustomerService
 	db                 *postgres.DB
+
+	offerSvc 		   *offer.OfferService
 	logger             *zap.Logger
 }
 
@@ -32,7 +39,9 @@ func NewScheduleService(
 	redemptionRepo *postgres.OfferRedemptionRepository,
 	offerRepo *postgres.AgentOfferRepository,
 	customerRepo *postgres.AgentCustomerRepository,
+	customerSvc *customer.CustomerService,
 	db *postgres.DB,
+	offerSvc *offer.OfferService,
 	logger *zap.Logger,
 ) *ScheduleService {
 	return &ScheduleService{
@@ -41,7 +50,9 @@ func NewScheduleService(
 		redemptionRepo: redemptionRepo,
 		offerRepo:      offerRepo,
 		customerRepo:   customerRepo,
+		customerSvc:    customerSvc,
 		db:             db,
+		offerSvc:       offerSvc,
 		logger:         logger,
 	}
 }
@@ -70,7 +81,7 @@ func (s *ScheduleService) CreateScheduledOffer(ctx context.Context, agentID int6
 	}
 
 	// Get or find customer
-	customerID, err := s.getOrCreateCustomer(ctx, agentID, req.CustomerPhone)
+	customerID, err := s.customerSvc.GetOrCreateCustomer(ctx, agentID, req.CustomerPhone)
 	if err != nil {
 		s.logger.Warn("failed to get/create customer", zap.Error(err))
 	}
@@ -175,7 +186,17 @@ func (s *ScheduleService) ExecuteScheduledOffer(ctx context.Context, agentID, sc
 	redemptionRef := s.generateRedemptionReference()
 
 	// Generate USSD code
-	ussdCode := s.generateUSSDCode(offer, scheduledOffer.CustomerPhone)
+	ussdCodeInfo, err := s.generateUSSDCode(ctx, offer, scheduledOffer.CustomerPhone)
+	if err != nil {
+		s.logger.Error("failed to generate USSD code", zap.Error(err))
+		//return nil, nil, fmt.Errorf("failed to generate USSD code: %w", err)
+	}
+
+
+	ussdCode := ussdCodeInfo.USSDCode
+	if ussdCode == "" {
+		ussdCode = offer.USSDCodeTemplate
+	}
 
 	// Calculate validity
 	validFrom := time.Now()
@@ -198,6 +219,9 @@ func (s *ScheduleService) ExecuteScheduledOffer(ctx context.Context, agentID, sc
 		MaxRetries:          3,
 		ValidFrom:           sql.NullTime{Time: validFrom, Valid: true},
 		ValidUntil:          sql.NullTime{Time: validUntil, Valid: true},
+	}
+	if ussdCodeInfo != nil {
+		redemption.USSDCodeExecutionInfo = ussdCodeInfo
 	}
 
 	if input.USSDResponse != "" {
@@ -545,18 +569,8 @@ func (s *ScheduleService) generateRedemptionReference() string {
 }
 
 // generateUSSDCode generates USSD code from offer template
-func (s *ScheduleService) generateUSSDCode(offer interface{}, phoneNumber string) string {
-	// This would use the offer's USSD template
-	return fmt.Sprintf("*181*%s#", phoneNumber)
-}
-
-// getOrCreateCustomer gets or creates customer
-func (s *ScheduleService) getOrCreateCustomer(ctx context.Context, agentID int64, phone string) (*int64, error) {
-	customer, err := s.customerRepo.FindByAgentAndPhone(ctx, agentID, phone)
-	if err == nil {
-		return &customer.ID, nil
-	}
-	return nil, nil
+func (s *ScheduleService) generateUSSDCode(ctx context.Context, offer *domainoffer.AgentOffer, phoneNumber string) (*domainoffer.USSDCodeExecutionInfo, error) {
+	return s.offerSvc.GetUSSDCodeForExecution(ctx, offer.AgentIdentityID, offer.ID, phoneNumber)
 }
 
 // calculateNextRenewal calculates next renewal date based on period

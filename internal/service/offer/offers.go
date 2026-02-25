@@ -1113,17 +1113,6 @@ func (s *OfferService) generateValidityLabel(days int) string {
 	return fmt.Sprintf("%d days", days)
 }
 
-// GenerateUSSDCode generates actual USSD code from template
-func (s *OfferService) GenerateUSSDCode(o *offer.AgentOffer, phoneNumber string) string {
-	code := o.USSDCodeTemplate
-
-	// Replace placeholders
-	code = strings.ReplaceAll(code, "{phone}", phoneNumber)
-	code = strings.ReplaceAll(code, "{customer_phone}", phoneNumber)
-	code = strings.ReplaceAll(code, "{amount}", fmt.Sprintf("%.0f", o.Amount))
-
-	return code
-}
 
 // CalculateDiscountedPrice calculates price after discount
 func (s *OfferService) CalculateDiscountedPrice(o *offer.AgentOffer) float64 {

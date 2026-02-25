@@ -123,6 +123,11 @@ func (s *AuthService) Register(ctx context.Context, req *auth.RegisterRequest) (
 		return nil, fmt.Errorf("failed to create profile: %w", err)
 	}
 
+	if err := s.authRepo.AssignRoleByName(ctx, identity.ID, "user"); err != nil {
+		// log only 
+		s.logger.Error("failed to assign user role", zap.Error(err))
+	}
+
 	// Send email verification
 	if err := s.SendEmailVerification(ctx, identity.ID, req.Email); err != nil {
 		s.logger.Error("failed to send verification email", zap.Error(err))
@@ -717,8 +722,10 @@ func (s *AuthService) CreateAdmin(ctx context.Context, req *auth.CreateAdminRequ
 	}
 
 	// Assign roles
-	// TODO: Implement role assignment based on req.Roles
-	// For now, we'll assume the roles are assigned manually
+	if err := s.authRepo.AssignRoleByName(ctx, identity.ID, "admin"); err != nil {
+		// log only 
+		s.logger.Error("failed to assign admin role", zap.Error(err))
+	}
 
 	// Send account created email
 	s.emailHelper.SendAccountCreatedByAdmin(ctx, req.Email, req.FullName, temporaryPassword, req.Roles)

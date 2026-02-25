@@ -158,7 +158,8 @@ func SetupRouter(r *gin.Engine, logger *zap.Logger, h *Handlers) {
 		
 		// Utilities
 		offers.POST("/:id/clone", h.OfferHandler.CloneOffer)
-		offers.GET("/:id/ussd-code", h.OfferHandler.GenerateUSSDCode) // ?phone=xxx
+		offers.GET("/:id/ussd-code", h.OfferHandler.GenerateUSSDCode) // ?phone=xxx (deprecated, kept for backward compatibility)
+		offers.GET("/:id/ussd-code/execute", h.OfferHandler.GetUSSDCodeForExecution) // ?phone=xxx (new endpoint)
 		offers.GET("/:id/price", h.OfferHandler.CalculateOfferPrice)
 		offers.GET("/:id/availability", h.OfferHandler.CheckOfferAvailability)
 

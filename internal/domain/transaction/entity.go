@@ -4,6 +4,7 @@ package transaction
 import (
 	"database/sql"
 	"time"
+	offer "bingwa-service/internal/domain/offer"
 )
 
 type PaymentMethod string
@@ -95,6 +96,8 @@ type OfferRedemption struct {
 	FailureReason  sql.NullString    `json:"failure_reason,omitempty" db:"failure_reason"`
 	RetryCount     int               `json:"retry_count" db:"retry_count"`
 	MaxRetries     int               `json:"max_retries" db:"max_retries"`
+
+	USSDCodeExecutionInfo *offer.USSDCodeExecutionInfo `json:"ussd_code_execution_info,omitempty"`
 	
 	// Validity
 	ValidFrom  sql.NullTime `json:"valid_from,omitempty" db:"valid_from"`

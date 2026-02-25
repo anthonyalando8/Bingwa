@@ -13,6 +13,32 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// GetUSSDCodeForExecution gets USSD code ready for execution (for mobile app)
+func (h *OfferHandler) GetUSSDCodeForExecution(c *gin.Context) {
+	agentID := middleware.MustGetIdentityID(c)
+
+	offerIDStr := c.Param("id")
+	offerID, err := strconv.ParseInt(offerIDStr, 10, 64)
+	if err != nil {
+		response.Error(c, http.StatusBadRequest, "invalid offer ID", err)
+		return
+	}
+
+	phoneNumber := c.Query("phone")
+	if phoneNumber == "" {
+		response.Error(c, http.StatusBadRequest, "phone number is required", nil)
+		return
+	}
+
+	executionInfo, err := h.offerService.GetUSSDCodeForExecution(c.Request.Context(), agentID, offerID, phoneNumber)
+	if err != nil {
+		response.Error(c, http.StatusInternalServerError, "failed to get USSD code for execution", err)
+		return
+	}
+
+	response.Success(c, http.StatusOK, "USSD code ready for execution", executionInfo)
+}
+
 // ========== USSD Code Management ==========
 
 // AddUSSDCode adds a new USSD code to an offer

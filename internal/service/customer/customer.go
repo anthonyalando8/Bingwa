@@ -27,6 +27,37 @@ func NewCustomerService(customerRepo *postgres.AgentCustomerRepository, logger *
 		logger:       logger,
 	}
 }
+func (s *CustomerService) GetOrCreateCustomer(ctx context.Context, agentID int64, phone string) (*int64, error) {
+	// Try to find existing customer
+	existingCustomer, err := s.customerRepo.FindByAgentAndPhone(ctx, agentID, phone)
+	if err == nil && existingCustomer != nil {
+		return &existingCustomer.ID, nil
+	}
+
+	// If customer not found, create new one
+	newCustomer := &customer.CreateCustomerRequest{
+		FullName:    "",    
+		PhoneNumber: phone,
+		AltPhoneNumber: "",
+		Email:       "",
+		Notes:       "Created via scheduled offer",
+		Tags:        []string{},
+		Metadata: map[string]interface{}{
+			"agent_id": agentID,
+			"source":   "scheduled_offer",
+		},
+	}
+
+	// Create customer
+	createdCustomer, err := s.CreateCustomer(ctx, agentID, newCustomer)
+	if err != nil {
+		s.logger.Error("failed to create customer", zap.Error(err))
+		return nil, err
+	}
+
+	return &createdCustomer.ID, nil
+}
+
 
 // CreateCustomer creates a new customer for an agent
 func (s *CustomerService) CreateCustomer(ctx context.Context, agentID int64, req *customer.CreateCustomerRequest) (*customer.AgentCustomer, error) {

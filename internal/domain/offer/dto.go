@@ -129,3 +129,16 @@ type RecordUSSDResultRequest struct {
 	Success    bool   `json:"success"`
 	Response   string `json:"response"`
 }
+
+// USSDCodeExecutionInfo contains information for executing a USSD code
+type USSDCodeExecutionInfo struct {
+	USSDCodeID       int64    `json:"ussd_code_id,omitempty"`
+	USSDCode         string   `json:"ussd_code"`
+	ProcessingType   USSDProcessingType `json:"processing_type"`
+	ExpectedResponse string   `json:"expected_response,omitempty"`
+	ErrorPattern     string   `json:"error_pattern,omitempty"`
+	SignaturePattern string   `json:"signature_pattern,omitempty"`
+	Priority         int      `json:"priority"`
+	FallbackCodes    []string `json:"fallback_codes,omitempty"`
+	IsFallback       bool     `json:"is_fallback"`
+}
