@@ -1,11 +1,11 @@
 {
   "info": {
-    "_postman_id": "4f7aca18-593b-4e70-b77e-64250179944f",
+    "_postman_id": "3be89fbb-8c7b-45f8-b589-3a33a500dc3a",
     "name": "AuthY - Bingwa",
     "description": "Complete authentication system with JWT, role-based access control, notifications, and WebSocket support",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "30662231",
-    "_collection_link": "https://go.postman.co/collection/30662231-4f7aca18-593b-4e70-b77e-64250179944f?source=collection_link"
+    "_collection_link": "https://go.postman.co/collection/30662231-3be89fbb-8c7b-45f8-b589-3a33a500dc3a?source=collection_link"
   },
   "item": [
     {
@@ -36,8 +36,12 @@
             {
               "listen": "prerequest",
               "script": {
-                "exec": [],
-                "type": "text/javascript"
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
               }
             }
           ],
@@ -54,7 +58,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"anthonyalando1@gmail.com\",\n  \"phone\": \"254700536326\",\n  \"password\": \"HappyOwl58&\",\n  \"full_name\": \"Anthony Alando\",\n  \"device\": \"web-browser\"\n}"
+              "raw": "{\n  \"email\": \"bernardmuthengi9@gmail.com\",\n  \"phone\": \"254712345678\",\n  \"password\": \"HappyOwl58&\",\n  \"full_name\": \"Anthony Alando\",\n  \"device\": \"web-browser\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/api/v1/auth/register",
@@ -96,8 +100,12 @@
             {
               "listen": "prerequest",
               "script": {
-                "exec": [],
-                "type": "text/javascript"
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
               }
             }
           ],
@@ -114,7 +122,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"anthonyalando1@gmail.com\",\n  \"password\": \"HappyOwl58&\",\n  \"device\": \"web-browser\"\n}"
+              "raw": "{\n  \"email\": \"bernardmuthengi9@gmail.com\",\n  \"password\": \"HappyOwl58&\",\n  \"device\": \"web-browser\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/api/v1/auth/login",
@@ -638,6 +646,16 @@
         {
           "name": "Create Admin",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "POST",
             "header": [
               {
@@ -668,6 +686,16 @@
         {
           "name": "List Admins",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [],
             "url": {
@@ -689,6 +717,16 @@
         {
           "name": "Deactivate Admin",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "DELETE",
             "header": [],
             "url": {
@@ -722,6 +760,16 @@
         {
           "name": "Create Notification",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "POST",
             "header": [
               {
@@ -752,6 +800,16 @@
         {
           "name": "Send Bulk Notifications",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "POST",
             "header": [
               {
@@ -783,6 +841,16 @@
         {
           "name": "Broadcast Notification",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "POST",
             "header": [
               {
@@ -819,6 +887,16 @@
         {
           "name": "Get WebSocket Stats",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [],
             "url": {
@@ -929,6 +1007,11 @@
       "key": "identity_id",
       "value": "",
       "type": "string"
+    },
+    {
+      "key": "admin_token",
+      "value": "",
+      "type": "default"
     }
   ]
 }

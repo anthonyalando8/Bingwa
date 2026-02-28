@@ -1,14 +1,15 @@
 {
   "info": {
-    "_postman_id": "9e915981-4d94-4d19-95c2-314fa071ebda",
+    "_postman_id": "a88f262d-3b05-4e61-9fb1-b9d5579945d4",
     "name": "Bingwa - Business Logic",
     "description": "Complete business logic API including subscription plans, customers, offers, configurations, campaigns, transactions, schedules, and agent subscriptions",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "30662231"
+    "_exporter_id": "30662231",
+    "_collection_link": "https://go.postman.co/collection/30662231-a88f262d-3b05-4e61-9fb1-b9d5579945d4?source=collection_link"
   },
   "item": [
     {
-      "name": "❤️ Health Check",
+      "name": "Health Check",
       "item": [
         {
           "name": "Health Check",
@@ -20,8 +21,14 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/health",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "health"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "health"
+              ]
             }
           },
           "response": []
@@ -29,7 +36,7 @@
       ]
     },
     {
-      "name": "📋 Subscription Plans",
+      "name": "Subscription Plans",
       "item": [
         {
           "name": "Public Plans",
@@ -41,8 +48,15 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/plans/public",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "plans", "public"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "plans",
+                "public"
+              ]
             }
           },
           "response": []
@@ -56,13 +70,24 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{base_url}}/api/v1/plans/compare?plan_ids=1,2,3",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "plans", "compare"],
+              "raw": "{{base_url}}/api/v1/plans/compare?plan1=1&plan2=2",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "plans",
+                "compare"
+              ],
               "query": [
                 {
-                  "key": "plan_ids",
-                  "value": "1,2,3"
+                  "key": "plan1",
+                  "value": "1"
+                },
+                {
+                  "key": "plan2",
+                  "value": "2"
                 }
               ]
             }
@@ -76,8 +101,14 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/plans?page=1&page_size=20",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "plans"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "plans"
+              ],
               "query": [
                 {
                   "key": "page",
@@ -104,8 +135,15 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/plans/:id",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "plans", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "plans",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -123,12 +161,20 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/plans/code/:code",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "plans", "code", ":code"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "plans",
+                "code",
+                ":code"
+              ],
               "variable": [
                 {
                   "key": "code",
-                  "value": "BASIC-MONTHLY"
+                  "value": "BASIC-001"
                 }
               ]
             }
@@ -138,7 +184,7 @@
       ]
     },
     {
-      "name": "👥 Customers",
+      "name": "Customers",
       "item": [
         {
           "name": "List Customers",
@@ -147,8 +193,14 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/customers?page=1&page_size=20",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "customers"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customers"
+              ],
               "query": [
                 {
                   "key": "page",
@@ -179,13 +231,20 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{base_url}}/api/v1/customers/search?q=john",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "customers", "search"],
+              "raw": "{{base_url}}/api/v1/customers/search?q=0712345678",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customers",
+                "search"
+              ],
               "query": [
                 {
                   "key": "q",
-                  "value": "john"
+                  "value": "0712345678"
                 }
               ]
             }
@@ -199,8 +258,15 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/customers/stats",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "customers", "stats"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customers",
+                "stats"
+              ]
             }
           },
           "response": []
@@ -212,8 +278,15 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/customers/:id",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "customers", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customers",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -231,12 +304,20 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/customers/reference/:reference",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "customers", "reference", ":reference"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customers",
+                "reference",
+                ":reference"
+              ],
               "variable": [
                 {
                   "key": "reference",
-                  "value": "REF123456"
+                  "value": "CUST-1-20260225-G9HD"
                 }
               ]
             }
@@ -250,8 +331,15 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/customers/phone?phone=0722123456",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "customers", "phone"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customers",
+                "phone"
+              ],
               "query": [
                 {
                   "key": "phone",
@@ -278,8 +366,14 @@
             },
             "url": {
               "raw": "{{base_url}}/api/v1/customers",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "customers"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customers"
+              ]
             }
           },
           "response": []
@@ -300,8 +394,15 @@
             },
             "url": {
               "raw": "{{base_url}}/api/v1/customers/:id",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "customers", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customers",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -319,8 +420,15 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/customers/:id",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "customers", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customers",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -338,8 +446,16 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/customers/:id/activate",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "customers", ":id", "activate"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customers",
+                ":id",
+                "activate"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -357,8 +473,16 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/customers/:id/deactivate",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "customers", ":id", "deactivate"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customers",
+                ":id",
+                "deactivate"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -376,8 +500,16 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/customers/:id/verify",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "customers", ":id", "verify"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customers",
+                ":id",
+                "verify"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -404,8 +536,16 @@
             },
             "url": {
               "raw": "{{base_url}}/api/v1/customers/:id/tags",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "customers", ":id", "tags"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customers",
+                ":id",
+                "tags"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -423,8 +563,16 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/customers/:id/tags?tag=vip",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "customers", ":id", "tags"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customers",
+                ":id",
+                "tags"
+              ],
               "query": [
                 {
                   "key": "tag",
@@ -457,8 +605,15 @@
             },
             "url": {
               "raw": "{{base_url}}/api/v1/customers/bulk-import",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "customers", "bulk-import"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customers",
+                "bulk-import"
+              ]
             }
           },
           "response": []
@@ -466,10 +621,10 @@
       ]
     },
     {
-      "name": "🎁 Offers",
+      "name": "Offers",
       "item": [
         {
-          "name": "📟 USSD Codes",
+          "name": "USSD Codes",
           "item": [
             {
               "name": "List & Retrieve",
@@ -481,8 +636,16 @@
                     "header": [],
                     "url": {
                       "raw": "{{base_url}}/api/v1/offers/:id/ussd-codes",
-                      "host": ["{{base_url}}"],
-                      "path": ["api", "v1", "offers", ":id", "ussd-codes"],
+                      "host": [
+                        "{{base_url}}"
+                      ],
+                      "path": [
+                        "api",
+                        "v1",
+                        "offers",
+                        ":id",
+                        "ussd-codes"
+                      ],
                       "variable": [
                         {
                           "key": "id",
@@ -500,8 +663,17 @@
                     "header": [],
                     "url": {
                       "raw": "{{base_url}}/api/v1/offers/:id/ussd-codes/active",
-                      "host": ["{{base_url}}"],
-                      "path": ["api", "v1", "offers", ":id", "ussd-codes", "active"],
+                      "host": [
+                        "{{base_url}}"
+                      ],
+                      "path": [
+                        "api",
+                        "v1",
+                        "offers",
+                        ":id",
+                        "ussd-codes",
+                        "active"
+                      ],
                       "variable": [
                         {
                           "key": "id",
@@ -519,8 +691,17 @@
                     "header": [],
                     "url": {
                       "raw": "{{base_url}}/api/v1/offers/:id/ussd-codes/primary",
-                      "host": ["{{base_url}}"],
-                      "path": ["api", "v1", "offers", ":id", "ussd-codes", "primary"],
+                      "host": [
+                        "{{base_url}}"
+                      ],
+                      "path": [
+                        "api",
+                        "v1",
+                        "offers",
+                        ":id",
+                        "ussd-codes",
+                        "primary"
+                      ],
                       "variable": [
                         {
                           "key": "id",
@@ -538,8 +719,17 @@
                     "header": [],
                     "url": {
                       "raw": "{{base_url}}/api/v1/offers/:id/ussd-codes/stats",
-                      "host": ["{{base_url}}"],
-                      "path": ["api", "v1", "offers", ":id", "ussd-codes", "stats"],
+                      "host": [
+                        "{{base_url}}"
+                      ],
+                      "path": [
+                        "api",
+                        "v1",
+                        "offers",
+                        ":id",
+                        "ussd-codes",
+                        "stats"
+                      ],
                       "variable": [
                         {
                           "key": "id",
@@ -567,12 +757,20 @@
                     ],
                     "body": {
                       "mode": "raw",
-                      "raw": "{\n  \"ussd_code\": \"*456*1*12*4*2*BH*1*1#\",\n  \"signature_pattern\": \"*456*1*12*\",\n  \"priority\": 0,\n  \"processing_type\": \"multistep\",\n  \"expected_response\": \"success\",\n  \"error_pattern\": \"insufficient|failed\"\n}"
+                      "raw": "{\n  \"ussd_code\": \"*456*1*12*4*2*{phone}*1*1#\",\n  \"signature_pattern\": \"*456*1*12*\",\n  \"priority\": 1,\n  \"processing_type\": \"multistep\",\n  \"expected_response\": \"success\",\n  \"error_pattern\": \"insufficient|failed\"\n}"
                     },
                     "url": {
                       "raw": "{{base_url}}/api/v1/offers/:id/ussd-codes",
-                      "host": ["{{base_url}}"],
-                      "path": ["api", "v1", "offers", ":id", "ussd-codes"],
+                      "host": [
+                        "{{base_url}}"
+                      ],
+                      "path": [
+                        "api",
+                        "v1",
+                        "offers",
+                        ":id",
+                        "ussd-codes"
+                      ],
                       "variable": [
                         {
                           "key": "id",
@@ -595,12 +793,21 @@
                     ],
                     "body": {
                       "mode": "raw",
-                      "raw": "{\n  \"priority\": 2,\n  \"is_active\": true\n}"
+                      "raw": "{\n  \"ussd_code\": \"*456*1*12*4*2*{phone}*1*1#\",\n  \"signature_pattern\": \"*456*1*12*\",\n  \"priority\": 1,\n  \"is_active\": true,\n  \"processing_type\": \"multistep\",\n  \"expected_response\": \"success\",\n  \"error_pattern\": \"insufficient|failed\",\n  \"metadata\": {\n    \"network\": \"Safaricom\",\n    \"category\": \"bundle\"\n  }\n}"
                     },
                     "url": {
                       "raw": "{{base_url}}/api/v1/offers/:id/ussd-codes/:ussd_code_id",
-                      "host": ["{{base_url}}"],
-                      "path": ["api", "v1", "offers", ":id", "ussd-codes", ":ussd_code_id"],
+                      "host": [
+                        "{{base_url}}"
+                      ],
+                      "path": [
+                        "api",
+                        "v1",
+                        "offers",
+                        ":id",
+                        "ussd-codes",
+                        ":ussd_code_id"
+                      ],
                       "variable": [
                         {
                           "key": "id",
@@ -608,7 +815,7 @@
                         },
                         {
                           "key": "ussd_code_id",
-                          "value": "2"
+                          "value": "1"
                         }
                       ]
                     }
@@ -627,8 +834,18 @@
                     "header": [],
                     "url": {
                       "raw": "{{base_url}}/api/v1/offers/:id/ussd-codes/:ussd_code_id/set-primary",
-                      "host": ["{{base_url}}"],
-                      "path": ["api", "v1", "offers", ":id", "ussd-codes", ":ussd_code_id", "set-primary"],
+                      "host": [
+                        "{{base_url}}"
+                      ],
+                      "path": [
+                        "api",
+                        "v1",
+                        "offers",
+                        ":id",
+                        "ussd-codes",
+                        ":ussd_code_id",
+                        "set-primary"
+                      ],
                       "variable": [
                         {
                           "key": "id",
@@ -636,7 +853,7 @@
                         },
                         {
                           "key": "ussd_code_id",
-                          "value": "2"
+                          "value": "1"
                         }
                       ]
                     }
@@ -655,12 +872,21 @@
                     ],
                     "body": {
                       "mode": "raw",
-                      "raw": "{\n  \"codes\": [\n    {\"id\": 1, \"priority\": 2},\n    {\"id\": 2, \"priority\": 1}\n  ]\n}"
+                      "raw": "{\n  \"codes\": [\n    {\"id\": 1, \"priority\": 2},\n    {\"id\": 3, \"priority\": 1}\n  ]\n}"
                     },
                     "url": {
                       "raw": "{{base_url}}/api/v1/offers/:id/ussd-codes/reorder",
-                      "host": ["{{base_url}}"],
-                      "path": ["api", "v1", "offers", ":id", "ussd-codes", "reorder"],
+                      "host": [
+                        "{{base_url}}"
+                      ],
+                      "path": [
+                        "api",
+                        "v1",
+                        "offers",
+                        ":id",
+                        "ussd-codes",
+                        "reorder"
+                      ],
                       "variable": [
                         {
                           "key": "id",
@@ -688,12 +914,22 @@
                     ],
                     "body": {
                       "mode": "raw",
-                      "raw": "{\n  \"is_active\": false\n}"
+                      "raw": "{\n  \"is_active\": true\n}"
                     },
                     "url": {
                       "raw": "{{base_url}}/api/v1/offers/:id/ussd-codes/:ussd_code_id/toggle-status",
-                      "host": ["{{base_url}}"],
-                      "path": ["api", "v1", "offers", ":id", "ussd-codes", ":ussd_code_id", "toggle-status"],
+                      "host": [
+                        "{{base_url}}"
+                      ],
+                      "path": [
+                        "api",
+                        "v1",
+                        "offers",
+                        ":id",
+                        "ussd-codes",
+                        ":ussd_code_id",
+                        "toggle-status"
+                      ],
                       "variable": [
                         {
                           "key": "id",
@@ -701,7 +937,7 @@
                         },
                         {
                           "key": "ussd_code_id",
-                          "value": "2"
+                          "value": "1"
                         }
                       ]
                     }
@@ -715,8 +951,17 @@
                     "header": [],
                     "url": {
                       "raw": "{{base_url}}/api/v1/offers/:id/ussd-codes/:ussd_code_id",
-                      "host": ["{{base_url}}"],
-                      "path": ["api", "v1", "offers", ":id", "ussd-codes", ":ussd_code_id"],
+                      "host": [
+                        "{{base_url}}"
+                      ],
+                      "path": [
+                        "api",
+                        "v1",
+                        "offers",
+                        ":id",
+                        "ussd-codes",
+                        ":ussd_code_id"
+                      ],
                       "variable": [
                         {
                           "key": "id",
@@ -752,8 +997,17 @@
                     },
                     "url": {
                       "raw": "{{base_url}}/api/v1/offers/:id/ussd-codes/record-result",
-                      "host": ["{{base_url}}"],
-                      "path": ["api", "v1", "offers", ":id", "ussd-codes", "record-result"],
+                      "host": [
+                        "{{base_url}}"
+                      ],
+                      "path": [
+                        "api",
+                        "v1",
+                        "offers",
+                        ":id",
+                        "ussd-codes",
+                        "record-result"
+                      ],
                       "variable": [
                         {
                           "key": "id",
@@ -775,8 +1029,14 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/offers?page=1&page_size=20",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "offers"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "offers"
+              ],
               "query": [
                 {
                   "key": "page",
@@ -798,8 +1058,15 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/offers/featured",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "offers", "featured"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "offers",
+                "featured"
+              ]
             }
           },
           "response": []
@@ -810,13 +1077,24 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{base_url}}/api/v1/offers/search?q=data",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "offers", "search"],
+              "raw": "{{base_url}}/api/v1/offers/search?q=data&type=sms",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "offers",
+                "search"
+              ],
               "query": [
                 {
                   "key": "q",
                   "value": "data"
+                },
+                {
+                  "key": "type",
+                  "value": "sms"
                 }
               ]
             }
@@ -830,8 +1108,15 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/offers/stats",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "offers", "stats"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "offers",
+                "stats"
+              ]
             }
           },
           "response": []
@@ -843,8 +1128,15 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/offers/:id",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "offers", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "offers",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -862,8 +1154,16 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/offers/code/:code",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "offers", "code", ":code"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "offers",
+                "code",
+                ":code"
+              ],
               "variable": [
                 {
                   "key": "code",
@@ -886,12 +1186,18 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"5GB Data Bundle\",\n  \"description\": \"5GB valid for 30 days\",\n  \"type\": \"data\",\n  \"amount\": 5,\n  \"units\": \"GB\",\n  \"price\": 500,\n  \"currency\": \"KES\",\n  \"validity_days\": 30,\n  \"ussd_code_template\": \"*181*{phone}*500#\",\n  \"ussd_processing_type\": \"express\"\n}"
+              "raw": "{\n  \"name\": \"5GB Data Bundle\",\n  \"description\": \"5GB valid for 30 days\",\n  \"type\": \"data\",\n  \"amount\": 5,\n  \"units\": \"GB\",\n\n  \"price\": 500,\n  \"currency\": \"KES\",\n  \"discount_percentage\": 0,\n\n  \"validity_days\": 30,\n  \"validity_label\": \"30 Days\",\n\n  \"ussd_code_template\": \"*456*1*4*6*4*2*{phone}*1*1#\",\n  \"ussd_processing_type\": \"express\",\n  \"ussd_expected_response\": \"CON\",\n  \"ussd_error_pattern\": \"END|ERROR\",\n\n  \"is_featured\": false,\n  \"is_recurring\": false,\n  \"max_purchases_per_customer\": 1,\n\n  \"available_from\": \"2026-02-25T00:00:00Z\",\n  \"available_until\": \"2026-03-31T23:59:59Z\",\n\n  \"tags\": [\"data\", \"5GB\", \"monthly\"],\n  \"metadata\": {\n    \"network\": \"Safaricom\",\n    \"category\": \"internet_bundle\"\n  }\n}"
             },
             "url": {
               "raw": "{{base_url}}/api/v1/offers",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "offers"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "offers"
+              ]
             }
           },
           "response": []
@@ -908,12 +1214,19 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"10GB Data Bundle\",\n  \"price\": 900\n}"
+              "raw": "{\n  \"name\": \"Super 5GB Weekly Bundle\",\n  \"description\": \"Get 5GB of high-speed data valid for 7 days at a discounted price.\",\n  \"type\": \"data\",\n  \"amount\": 5,\n  \"units\": \"GB\",\n\n  \"price\": 500,\n  \"discount_percentage\": 10,\n\n  \"validity_days\": 7,\n  \"validity_label\": \"7 Days\",\n\n  \"ussd_code_template\": \"*123*5*1#\",\n  \"ussd_processing_type\": \"express\",\n  \"ussd_expected_response\": \"CON Your data bundle has been activated successfully\",\n  \"ussd_error_pattern\": \"INSUFFICIENT|FAILED|ERROR\",\n\n  \"is_featured\": true,\n  \"is_recurring\": false,\n  \"max_purchases_per_customer\": 3,\n\n  \"available_from\": \"2026-03-01T00:00:00Z\",\n  \"available_until\": \"2026-12-31T23:59:59Z\",\n\n  \"tags\": [\"data\", \"weekly\", \"promotion\", \"featured\"],\n\n  \"metadata\": {\n    \"campaign\": \"Q1 Data Promo\",\n    \"updated_by\": \"admin_user\",\n    \"priority\": \"high\"\n  }\n}"
             },
             "url": {
               "raw": "{{base_url}}/api/v1/offers/:id",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "offers", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "offers",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -931,8 +1244,15 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/offers/:id",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "offers", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "offers",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -950,8 +1270,16 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/offers/:id/activate",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "offers", ":id", "activate"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "offers",
+                ":id",
+                "activate"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -969,8 +1297,16 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/offers/:id/deactivate",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "offers", ":id", "deactivate"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "offers",
+                ":id",
+                "deactivate"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -988,8 +1324,16 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/offers/:id/pause",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "offers", ":id", "pause"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "offers",
+                ":id",
+                "pause"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -1016,8 +1360,16 @@
             },
             "url": {
               "raw": "{{base_url}}/api/v1/offers/:id/clone",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "offers", ":id", "clone"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "offers",
+                ":id",
+                "clone"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -1035,8 +1387,16 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/offers/:id/ussd-code?phone=0722123456",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "offers", ":id", "ussd-code"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "offers",
+                ":id",
+                "ussd-code"
+              ],
               "query": [
                 {
                   "key": "phone",
@@ -1060,8 +1420,17 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/offers/:id/ussd-code/execute?phone=0722123456",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "offers", ":id", "ussd-code", "execute"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "offers",
+                ":id",
+                "ussd-code",
+                "execute"
+              ],
               "query": [
                 {
                   "key": "phone",
@@ -1085,8 +1454,16 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/offers/:id/price",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "offers", ":id", "price"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "offers",
+                ":id",
+                "price"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -1104,8 +1481,16 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/offers/:id/availability",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "offers", ":id", "availability"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "offers",
+                ":id",
+                "availability"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -1115,11 +1500,153 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "Get Offer by Amount",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/offers/by-amount?amount=5",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "offers",
+                "by-amount"
+              ],
+              "query": [
+                {
+                  "key": "amount",
+                  "value": "5"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get By Amount Range",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/offers/by-amount-range?min_amount=1&max_amount=10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "offers",
+                "by-amount-range"
+              ],
+              "query": [
+                {
+                  "key": "min_amount",
+                  "value": "1"
+                },
+                {
+                  "key": "max_amount",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get by Type and Amount",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/offers/by-type-and-amount?type=data&amount=5",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "offers",
+                "by-type-and-amount"
+              ],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "data"
+                },
+                {
+                  "key": "amount",
+                  "value": "5"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get by Price",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/offers/by-price?price=500",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "offers",
+                "by-price"
+              ],
+              "query": [
+                {
+                  "key": "price",
+                  "value": "500"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get by Price and Type",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/offers/by-price-and-type?price=500&type=data",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "offers",
+                "by-price-and-type"
+              ],
+              "query": [
+                {
+                  "key": "price",
+                  "value": "500"
+                },
+                {
+                  "key": "type",
+                  "value": "data"
+                }
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
     {
-      "name": "⚙️ Configurations",
+      "name": "Configurations",
       "item": [
         {
           "name": "General Config",
@@ -1140,8 +1667,14 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/api/v1/configs",
-                  "host": ["{{base_url}}"],
-                  "path": ["api", "v1", "configs"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "configs"
+                  ]
                 }
               },
               "response": []
@@ -1153,8 +1686,14 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/api/v1/configs?page=1&page_size=20",
-                  "host": ["{{base_url}}"],
-                  "path": ["api", "v1", "configs"],
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "configs"
+                  ],
                   "query": [
                     {
                       "key": "page",
@@ -1176,8 +1715,15 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/api/v1/configs/all",
-                  "host": ["{{base_url}}"],
-                  "path": ["api", "v1", "configs", "all"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "configs",
+                    "all"
+                  ]
                 }
               },
               "response": []
@@ -1189,8 +1735,15 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/api/v1/configs/global",
-                  "host": ["{{base_url}}"],
-                  "path": ["api", "v1", "configs", "global"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "configs",
+                    "global"
+                  ]
                 }
               },
               "response": []
@@ -1202,8 +1755,15 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/api/v1/configs/:id",
-                  "host": ["{{base_url}}"],
-                  "path": ["api", "v1", "configs", ":id"],
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "configs",
+                    ":id"
+                  ],
                   "variable": [
                     {
                       "key": "id",
@@ -1221,8 +1781,16 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/api/v1/configs/key/:key?device_id=device1",
-                  "host": ["{{base_url}}"],
-                  "path": ["api", "v1", "configs", "key", ":key"],
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "configs",
+                    "key",
+                    ":key"
+                  ],
                   "query": [
                     {
                       "key": "device_id",
@@ -1255,8 +1823,15 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/api/v1/configs/:id",
-                  "host": ["{{base_url}}"],
-                  "path": ["api", "v1", "configs", ":id"],
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "configs",
+                    ":id"
+                  ],
                   "variable": [
                     {
                       "key": "id",
@@ -1274,8 +1849,15 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/api/v1/configs/:id",
-                  "host": ["{{base_url}}"],
-                  "path": ["api", "v1", "configs", ":id"],
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "configs",
+                    ":id"
+                  ],
                   "variable": [
                     {
                       "key": "id",
@@ -1293,8 +1875,16 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/api/v1/configs/devices/:device_id",
-                  "host": ["{{base_url}}"],
-                  "path": ["api", "v1", "configs", "devices", ":device_id"],
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "configs",
+                    "devices",
+                    ":device_id"
+                  ],
                   "variable": [
                     {
                       "key": "device_id",
@@ -1317,8 +1907,16 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/api/v1/configs/types/notifications",
-                  "host": ["{{base_url}}"],
-                  "path": ["api", "v1", "configs", "types", "notifications"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "configs",
+                    "types",
+                    "notifications"
+                  ]
                 }
               },
               "response": []
@@ -1339,8 +1937,16 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/api/v1/configs/types/notifications",
-                  "host": ["{{base_url}}"],
-                  "path": ["api", "v1", "configs", "types", "notifications"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "configs",
+                    "types",
+                    "notifications"
+                  ]
                 }
               },
               "response": []
@@ -1352,8 +1958,16 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/api/v1/configs/types/ussd",
-                  "host": ["{{base_url}}"],
-                  "path": ["api", "v1", "configs", "types", "ussd"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "configs",
+                    "types",
+                    "ussd"
+                  ]
                 }
               },
               "response": []
@@ -1374,8 +1988,16 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/api/v1/configs/types/ussd",
-                  "host": ["{{base_url}}"],
-                  "path": ["api", "v1", "configs", "types", "ussd"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "configs",
+                    "types",
+                    "ussd"
+                  ]
                 }
               },
               "response": []
@@ -1387,8 +2009,17 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/api/v1/configs/types/android/:device_id",
-                  "host": ["{{base_url}}"],
-                  "path": ["api", "v1", "configs", "types", "android", ":device_id"],
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "configs",
+                    "types",
+                    "android",
+                    ":device_id"
+                  ],
                   "variable": [
                     {
                       "key": "device_id",
@@ -1415,8 +2046,17 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/api/v1/configs/types/android/:device_id",
-                  "host": ["{{base_url}}"],
-                  "path": ["api", "v1", "configs", "types", "android", ":device_id"],
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "configs",
+                    "types",
+                    "android",
+                    ":device_id"
+                  ],
                   "variable": [
                     {
                       "key": "device_id",
@@ -1434,8 +2074,16 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/api/v1/configs/types/business",
-                  "host": ["{{base_url}}"],
-                  "path": ["api", "v1", "configs", "types", "business"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "configs",
+                    "types",
+                    "business"
+                  ]
                 }
               },
               "response": []
@@ -1456,8 +2104,16 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/api/v1/configs/types/business",
-                  "host": ["{{base_url}}"],
-                  "path": ["api", "v1", "configs", "types", "business"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "configs",
+                    "types",
+                    "business"
+                  ]
                 }
               },
               "response": []
@@ -1469,8 +2125,16 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/api/v1/configs/types/display",
-                  "host": ["{{base_url}}"],
-                  "path": ["api", "v1", "configs", "types", "display"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "configs",
+                    "types",
+                    "display"
+                  ]
                 }
               },
               "response": []
@@ -1491,8 +2155,16 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/api/v1/configs/types/display",
-                  "host": ["{{base_url}}"],
-                  "path": ["api", "v1", "configs", "types", "display"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "configs",
+                    "types",
+                    "display"
+                  ]
                 }
               },
               "response": []
@@ -1504,8 +2176,16 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/api/v1/configs/types/security",
-                  "host": ["{{base_url}}"],
-                  "path": ["api", "v1", "configs", "types", "security"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "configs",
+                    "types",
+                    "security"
+                  ]
                 }
               },
               "response": []
@@ -1526,8 +2206,16 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/api/v1/configs/types/security",
-                  "host": ["{{base_url}}"],
-                  "path": ["api", "v1", "configs", "types", "security"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "configs",
+                    "types",
+                    "security"
+                  ]
                 }
               },
               "response": []
@@ -1537,7 +2225,7 @@
       ]
     },
     {
-      "name": "🎯 Campaigns",
+      "name": "Campaigns",
       "item": [
         {
           "name": "List Campaigns",
@@ -1546,8 +2234,14 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/campaigns?page=1&page_size=20",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "campaigns"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "campaigns"
+              ],
               "query": [
                 {
                   "key": "page",
@@ -1569,8 +2263,15 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/campaigns/active",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "campaigns", "active"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "campaigns",
+                "active"
+              ]
             }
           },
           "response": []
@@ -1582,8 +2283,15 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/campaigns/:id",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "campaigns", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "campaigns",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -1601,8 +2309,16 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/campaigns/:id/details",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "campaigns", ":id", "details"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "campaigns",
+                ":id",
+                "details"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -1620,8 +2336,16 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/campaigns/code/:code",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "campaigns", "code", ":code"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "campaigns",
+                "code",
+                ":code"
+              ],
               "variable": [
                 {
                   "key": "code",
@@ -1648,8 +2372,15 @@
             },
             "url": {
               "raw": "{{base_url}}/api/v1/campaigns/validate",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "campaigns", "validate"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "campaigns",
+                "validate"
+              ]
             }
           },
           "response": []
@@ -1670,8 +2401,16 @@
             },
             "url": {
               "raw": "{{base_url}}/api/v1/campaigns/:id/apply",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "campaigns", ":id", "apply"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "campaigns",
+                ":id",
+                "apply"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -1689,8 +2428,15 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/campaigns/check-availability?code=NEWYEAR50",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "campaigns", "check-availability"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "campaigns",
+                "check-availability"
+              ],
               "query": [
                 {
                   "key": "code",
@@ -1704,7 +2450,7 @@
       ]
     },
     {
-      "name": "💳 Transactions",
+      "name": "Transactions",
       "item": [
         {
           "name": "Offer Requests",
@@ -1721,12 +2467,19 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"offer_id\": 1,\n  \"customer_phone\": \"0722123456\",\n  \"customer_name\": \"John Doe\",\n  \"payment_method\": \"mpesa\",\n  \"amount_paid\": 500,\n  \"currency\": \"KES\",\n  \"mpesa_transaction_id\": \"QA12345678\"\n}"
+                  "raw": "{\n  \"offer_id\": 1,\n  \"customer_phone\": \"0712345678\",\n  \"customer_name\": \"John Doe\",\n  \"payment_method\": \"mpesa\",\n  \"amount_paid\": 1200,\n  \"currency\": \"KES\",\n  \"status\": \"completed\",\n\n  \"mpesa_transaction_id\": \"LZM123ABC\",\n  \"mpesa_receipt_number\": \"ABC123XYZ\",\n  \"mpesa_transaction_date\": \"2026-02-25T10:30:00Z\",\n  \"mpesa_phone_number\": \"0712345678\",\n  \"mpesa_message\": \"Payment received successfully\",\n\n  \"device_info\": {\n    \"device_id\": \"DEVICE-001\",\n    \"device_model\": \"Samsung Galaxy S23\",\n    \"os_version\": \"Android 13\"\n  },\n\n  \"metadata\": {\n    \"agent_id\": 10,\n    \"channel\": \"web\",\n    \"notes\": \"First-time purchase\"\n  }\n}"
                 },
                 "url": {
                   "raw": "{{base_url}}/api/v1/transactions/requests",
-                  "host": ["{{base_url}}"],
-                  "path": ["api", "v1", "transactions", "requests"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "transactions",
+                    "requests"
+                  ]
                 }
               },
               "response": []
@@ -1738,8 +2491,15 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/api/v1/transactions/requests?page=1&page_size=20",
-                  "host": ["{{base_url}}"],
-                  "path": ["api", "v1", "transactions", "requests"],
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "transactions",
+                    "requests"
+                  ],
                   "query": [
                     {
                       "key": "page",
@@ -1761,8 +2521,16 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/api/v1/transactions/requests/:id",
-                  "host": ["{{base_url}}"],
-                  "path": ["api", "v1", "transactions", "requests", ":id"],
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "transactions",
+                    "requests",
+                    ":id"
+                  ],
                   "variable": [
                     {
                       "key": "id",
@@ -1774,14 +2542,22 @@
               "response": []
             },
             {
-              "name": "Get Pending Requests",
+              "name": "Get Pending offer",
               "request": {
                 "method": "GET",
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/api/v1/transactions/requests/pending?limit=10",
-                  "host": ["{{base_url}}"],
-                  "path": ["api", "v1", "transactions", "requests", "pending"],
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "transactions",
+                    "requests",
+                    "pending"
+                  ],
                   "query": [
                     {
                       "key": "limit",
@@ -1799,8 +2575,16 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/api/v1/transactions/requests/failed",
-                  "host": ["{{base_url}}"],
-                  "path": ["api", "v1", "transactions", "requests", "failed"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "transactions",
+                    "requests",
+                    "failed"
+                  ]
                 }
               },
               "response": []
@@ -1812,8 +2596,16 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/api/v1/transactions/requests/processing",
-                  "host": ["{{base_url}}"],
-                  "path": ["api", "v1", "transactions", "requests", "processing"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "transactions",
+                    "requests",
+                    "processing"
+                  ]
                 }
               },
               "response": []
@@ -1825,8 +2617,16 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/api/v1/transactions/requests/by-status?status=pending",
-                  "host": ["{{base_url}}"],
-                  "path": ["api", "v1", "transactions", "requests", "by-status"],
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "transactions",
+                    "requests",
+                    "by-status"
+                  ],
                   "query": [
                     {
                       "key": "status",
@@ -1853,8 +2653,17 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/api/v1/transactions/requests/:id/status",
-                  "host": ["{{base_url}}"],
-                  "path": ["api", "v1", "transactions", "requests", ":id", "status"],
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "transactions",
+                    "requests",
+                    ":id",
+                    "status"
+                  ],
                   "variable": [
                     {
                       "key": "id",
@@ -1881,12 +2690,21 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/api/v1/transactions/requests/:id/complete",
-                  "host": ["{{base_url}}"],
-                  "path": ["api", "v1", "transactions", "requests", ":id", "complete"],
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "transactions",
+                    "requests",
+                    ":id",
+                    "complete"
+                  ],
                   "variable": [
                     {
                       "key": "id",
-                      "value": "1"
+                      "value": "2"
                     }
                   ]
                 }
@@ -1900,8 +2718,17 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/api/v1/transactions/requests/:id/processing",
-                  "host": ["{{base_url}}"],
-                  "path": ["api", "v1", "transactions", "requests", ":id", "processing"],
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "transactions",
+                    "requests",
+                    ":id",
+                    "processing"
+                  ],
                   "variable": [
                     {
                       "key": "id",
@@ -1919,8 +2746,17 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/api/v1/transactions/requests/:id/retry",
-                  "host": ["{{base_url}}"],
-                  "path": ["api", "v1", "transactions", "requests", ":id", "retry"],
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "transactions",
+                    "requests",
+                    ":id",
+                    "retry"
+                  ],
                   "variable": [
                     {
                       "key": "id",
@@ -1938,8 +2774,17 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/api/v1/transactions/requests/batch/pending?device_id=device1&limit=50",
-                  "host": ["{{base_url}}"],
-                  "path": ["api", "v1", "transactions", "requests", "batch", "pending"],
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "transactions",
+                    "requests",
+                    "batch",
+                    "pending"
+                  ],
                   "query": [
                     {
                       "key": "device_id",
@@ -1970,8 +2815,17 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/api/v1/transactions/requests/batch/update",
-                  "host": ["{{base_url}}"],
-                  "path": ["api", "v1", "transactions", "requests", "batch", "update"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "transactions",
+                    "requests",
+                    "batch",
+                    "update"
+                  ]
                 }
               },
               "response": []
@@ -1987,9 +2841,16 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{base_url}}/api/v1/transactions/redemptions?page=1&page_size=20",
-                  "host": ["{{base_url}}"],
-                  "path": ["api", "v1", "transactions", "redemptions"],
+                  "raw": "{{base_url}}/api/v1/transactions/redemptions?page=1&page_size=20&offer_request_id=1",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "transactions",
+                    "redemptions"
+                  ],
                   "query": [
                     {
                       "key": "page",
@@ -1998,6 +2859,10 @@
                     {
                       "key": "page_size",
                       "value": "20"
+                    },
+                    {
+                      "key": "offer_request_id",
+                      "value": "1"
                     }
                   ]
                 }
@@ -2011,8 +2876,16 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/api/v1/transactions/redemptions/:id",
-                  "host": ["{{base_url}}"],
-                  "path": ["api", "v1", "transactions", "redemptions", ":id"],
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "transactions",
+                    "redemptions",
+                    ":id"
+                  ],
                   "variable": [
                     {
                       "key": "id",
@@ -2032,8 +2905,15 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/transactions/stats",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "transactions", "stats"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "transactions",
+                "stats"
+              ]
             }
           },
           "response": []
@@ -2041,7 +2921,7 @@
       ]
     },
     {
-      "name": "📅 Schedules",
+      "name": "Schedules",
       "item": [
         {
           "name": "Create Scheduled Offer",
@@ -2055,12 +2935,18 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"offer_id\": 1,\n  \"customer_phone\": \"0722123456\",\n  \"scheduled_time\": \"2024-01-15T08:00:00Z\",\n  \"auto_renew\": true,\n  \"renewal_period\": \"monthly\",\n  \"renewal_limit\": 12\n}"
+              "raw": "{\n  \"offer_id\": 1,\n  \"customer_phone\": \"0712345678\",\n\n  \"scheduled_time\": \"2026-03-01T08:00:00Z\",\n\n  \"auto_renew\": true,\n  \"renewal_period\": \"monthly\",\n  \"renewal_limit\": 6,\n  \"renew_until\": \"2026-09-01T08:00:00Z\",\n\n  \"metadata\": {\n    \"created_by\": \"admin\",\n    \"channel\": \"web_dashboard\",\n    \"note\": \"Customer requested automatic renewal for 6 months\"\n  }\n}"
             },
             "url": {
               "raw": "{{base_url}}/api/v1/schedules",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "schedules"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "schedules"
+              ]
             }
           },
           "response": []
@@ -2072,8 +2958,14 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/schedules?page=1&page_size=20",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "schedules"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "schedules"
+              ],
               "query": [
                 {
                   "key": "page",
@@ -2095,8 +2987,15 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/schedules/:id",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "schedules", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "schedules",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -2119,12 +3018,19 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"scheduled_time\": \"2024-01-20T08:00:00Z\"\n}"
+              "raw": "{\n  \"scheduled_time\": \"2026-03-05T09:30:00Z\"\n}\n\n// {\n//   \"auto_renew\": true,\n//   \"renewal_period\": \"monthly\",\n//   \"renewal_limit\": 3,\n//   \"renew_until\": \"2026-06-05T09:30:00Z\"\n// }"
             },
             "url": {
               "raw": "{{base_url}}/api/v1/schedules/:id",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "schedules", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "schedules",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -2142,8 +3048,16 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/schedules/:id/pause",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "schedules", ":id", "pause"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "schedules",
+                ":id",
+                "pause"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -2161,8 +3075,16 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/schedules/:id/resume",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "schedules", ":id", "resume"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "schedules",
+                ":id",
+                "resume"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -2180,8 +3102,16 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/schedules/:id/cancel",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "schedules", ":id", "cancel"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "schedules",
+                ":id",
+                "cancel"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -2204,16 +3134,24 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"ussd_response\": \"Successfully renewed\",\n  \"ussd_session_id\": \"SESSION456\",\n  \"ussd_processing_time\": 4000,\n  \"status\": \"success\"\n}"
+              "raw": "{\n  \"ussd_response\": \"CON Your data bundle has been activated successfully. Thank you for choosing our service.\",\n  \"ussd_session_id\": \"SESSION_9f8a7b6c123\",\n  \"ussd_processing_time\": 1450,\n  \"status\": \"success\",\n  \"failure_reason\": \"\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/api/v1/schedules/:id/execute",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "schedules", ":id", "execute"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "schedules",
+                ":id",
+                "execute"
+              ],
               "variable": [
                 {
                   "key": "id",
-                  "value": "1"
+                  "value": "2"
                 }
               ]
             }
@@ -2227,8 +3165,15 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/schedules/due",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "schedules", "due"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "schedules",
+                "due"
+              ]
             }
           },
           "response": []
@@ -2240,8 +3185,16 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/schedules/:id/history?page=1&page_size=20",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "schedules", ":id", "history"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "schedules",
+                ":id",
+                "history"
+              ],
               "query": [
                 {
                   "key": "page",
@@ -2255,7 +3208,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "1"
+                  "value": "2"
                 }
               ]
             }
@@ -2269,8 +3222,16 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/schedules/stats/overview",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "schedules", "stats", "overview"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "schedules",
+                "stats",
+                "overview"
+              ]
             }
           },
           "response": []
@@ -2282,8 +3243,16 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/schedules/stats/by-status?status=active",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "schedules", "stats", "by-status"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "schedules",
+                "stats",
+                "by-status"
+              ],
               "query": [
                 {
                   "key": "status",
@@ -2301,8 +3270,16 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/schedules/batch/due?device_id=device1&limit=50",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "schedules", "batch", "due"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "schedules",
+                "batch",
+                "due"
+              ],
               "query": [
                 {
                   "key": "device_id",
@@ -2333,8 +3310,16 @@
             },
             "url": {
               "raw": "{{base_url}}/api/v1/schedules/batch/execute",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "schedules", "batch", "execute"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "schedules",
+                "batch",
+                "execute"
+              ]
             }
           },
           "response": []
@@ -2342,7 +3327,7 @@
       ]
     },
     {
-      "name": "💼 Agent Subscriptions",
+      "name": "Agent Subscriptions",
       "item": [
         {
           "name": "Create Subscription",
@@ -2356,12 +3341,18 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"subscription_plan_id\": 1,\n  \"promotional_code\": \"NEWYEAR50\",\n  \"auto_renew\": true,\n  \"amount_paid\": 1000,\n  \"currency\": \"KES\",\n  \"payment_reference\": \"QA12345678\",\n  \"payment_method\": \"mpesa\"\n}"
+              "raw": "{\n  \"subscription_plan_id\": 1,\n  \"promotional_code\": \"WELCOME10\",\n  \"auto_renew\": true,\n\n  \"amount_paid\": 1250,\n  \"currency\": \"KES\",\n  \"payment_reference\": \"TQK4X8ABCD\",\n  \"payment_method\": \"mpesa\",\n\n  \"metadata\": {\n    \"source\": \"mobile_app\",\n    \"device_id\": \"android-9f8a7b6c\",\n    \"campaign\": \"Q1 Subscription Drive\",\n    \"customer_phone\": \"0712345678\"\n  }\n}"
             },
             "url": {
               "raw": "{{base_url}}/api/v1/subscriptions",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "subscriptions"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "subscriptions"
+              ]
             }
           },
           "response": []
@@ -2382,8 +3373,15 @@
             },
             "url": {
               "raw": "{{base_url}}/api/v1/subscriptions/renew",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "subscriptions", "renew"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "subscriptions",
+                "renew"
+              ]
             }
           },
           "response": []
@@ -2395,8 +3393,14 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/subscriptions?page=1&page_size=20",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "subscriptions"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "subscriptions"
+              ],
               "query": [
                 {
                   "key": "page",
@@ -2418,8 +3422,15 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/subscriptions/active",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "subscriptions", "active"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "subscriptions",
+                "active"
+              ]
             }
           },
           "response": []
@@ -2431,8 +3442,15 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/subscriptions/:id",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "subscriptions", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "subscriptions",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -2459,8 +3477,15 @@
             },
             "url": {
               "raw": "{{base_url}}/api/v1/subscriptions/:id",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "subscriptions", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "subscriptions",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -2487,8 +3512,16 @@
             },
             "url": {
               "raw": "{{base_url}}/api/v1/subscriptions/:id/cancel",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "subscriptions", ":id", "cancel"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "subscriptions",
+                ":id",
+                "cancel"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -2506,8 +3539,16 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/subscriptions/usage/current",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "subscriptions", "usage", "current"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "subscriptions",
+                "usage",
+                "current"
+              ]
             }
           },
           "response": []
@@ -2519,8 +3560,16 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/subscriptions/access/check",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "subscriptions", "access", "check"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "subscriptions",
+                "access",
+                "check"
+              ]
             }
           },
           "response": []
@@ -2532,8 +3581,16 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/subscriptions/stats/overview",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "subscriptions", "stats", "overview"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "subscriptions",
+                "stats",
+                "overview"
+              ]
             }
           },
           "response": []
@@ -2545,8 +3602,16 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/subscriptions/stats/by-status?status=active",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "subscriptions", "stats", "by-status"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "subscriptions",
+                "stats",
+                "by-status"
+              ],
               "query": [
                 {
                   "key": "status",
@@ -2565,6 +3630,16 @@
         {
           "name": "Create Plan",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "POST",
             "header": [
               {
@@ -2574,12 +3649,19 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Basic Plan\",\n  \"description\": \"Perfect for small businesses\",\n  \"price\": 1000,\n  \"currency\": \"KES\",\n  \"billing_usage\": 100,\n  \"billing_cycle\": \"monthly\",\n  \"max_offers\": 10,\n  \"max_customers\": 50,\n  \"is_public\": true\n}"
+              "raw": "{\n  \"plan_code\": \"PRO-001\",\n  \"name\": \"Pro Plan\",\n  \"description\": \"Designed for growing businesses with advanced needs\",\n  \n  \"price\": 5000,\n  \"currency\": \"KES\",\n  \"setup_fee\": 200,\n  \n  \"billing_usage\": 500,\n  \"billing_cycle\": \"monthly\",\n  \"overage_charge\": 20,\n  \n  \"max_offers\": 50,\n  \"max_customers\": 500,\n  \"features\": {\n    \"priority_support\": true,\n    \"custom_reports\": true,\n    \"multi_agent_access\": true\n  },\n  \n  \"is_public\": true,\n  \"metadata\": {\n    \"category\": \"professional\",\n    \"created_by\": \"admin\"\n  }\n}"
             },
             "url": {
               "raw": "{{base_url}}/api/v1/admin/plans",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "admin", "plans"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "plans"
+              ]
             }
           },
           "response": []
@@ -2587,6 +3669,16 @@
         {
           "name": "Update Plan",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "PUT",
             "header": [
               {
@@ -2596,12 +3688,20 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Basic Plan Updated\",\n  \"price\": 1200\n}"
+              "raw": "{\n  \"name\": \"Basic Plan Updated\",\n  \"description\": \"Perfect for small businesses, updated with new features\",\n  \n  \"price\": 1200,\n  \"setup_fee\": 50,\n  \n  \"billing_usage\": 150,\n  \"billing_cycle\": \"monthly\",\n  \"overage_charge\": 10,\n  \n  \"max_offers\": 15,\n  \"max_customers\": 75,\n  \"features\": {\n    \"priority_support\": true,\n    \"custom_reports\": false\n  },\n  \n  \"is_public\": true,\n  \"metadata\": {\n    \"category\": \"starter\",\n    \"updated_by\": \"admin\"\n  }\n}"
             },
             "url": {
               "raw": "{{base_url}}/api/v1/admin/plans/:id",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "admin", "plans", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "plans",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -2615,12 +3715,31 @@
         {
           "name": "Activate Plan",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "PUT",
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/admin/plans/:id/activate",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "admin", "plans", ":id", "activate"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "plans",
+                ":id",
+                "activate"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -2634,12 +3753,31 @@
         {
           "name": "Deactivate Plan",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "PUT",
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/admin/plans/:id/deactivate",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "admin", "plans", ":id", "deactivate"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "plans",
+                ":id",
+                "deactivate"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -2653,12 +3791,30 @@
         {
           "name": "Delete Plan",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "DELETE",
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/admin/plans/:id",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "admin", "plans", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "plans",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -2672,12 +3828,30 @@
         {
           "name": "Get Plan Stats",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/admin/plans/stats",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "admin", "plans", "stats"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "plans",
+                "stats"
+              ]
             }
           },
           "response": []
@@ -2690,12 +3864,29 @@
         {
           "name": "List All Customers",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/admin/customers?agent_id=1&page=1&page_size=20",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "admin", "customers"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "customers"
+              ],
               "query": [
                 {
                   "key": "agent_id",
@@ -2717,12 +3908,30 @@
         {
           "name": "Get Customer Stats",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/admin/customers/stats?agent_id=1",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "admin", "customers", "stats"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "customers",
+                "stats"
+              ],
               "query": [
                 {
                   "key": "agent_id",
@@ -2736,12 +3945,30 @@
         {
           "name": "Get Customer",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/admin/customers/:id?agent_id=1",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "admin", "customers", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "customers",
+                ":id"
+              ],
               "query": [
                 {
                   "key": "agent_id",
@@ -2761,6 +3988,16 @@
         {
           "name": "Update Customer",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "PUT",
             "header": [
               {
@@ -2774,8 +4011,16 @@
             },
             "url": {
               "raw": "{{base_url}}/api/v1/admin/customers/:id?agent_id=1",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "admin", "customers", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "customers",
+                ":id"
+              ],
               "query": [
                 {
                   "key": "agent_id",
@@ -2795,12 +4040,30 @@
         {
           "name": "Delete Customer",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "DELETE",
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/admin/customers/:id?agent_id=1",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "admin", "customers", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "customers",
+                ":id"
+              ],
               "query": [
                 {
                   "key": "agent_id",
@@ -2825,6 +4088,16 @@
         {
           "name": "Create Campaign",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "POST",
             "header": [
               {
@@ -2838,8 +4111,15 @@
             },
             "url": {
               "raw": "{{base_url}}/api/v1/admin/campaigns",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "admin", "campaigns"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "campaigns"
+              ]
             }
           },
           "response": []
@@ -2847,6 +4127,16 @@
         {
           "name": "Update Campaign",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "PUT",
             "header": [
               {
@@ -2860,8 +4150,16 @@
             },
             "url": {
               "raw": "{{base_url}}/api/v1/admin/campaigns/:id",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "admin", "campaigns", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "campaigns",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -2875,12 +4173,30 @@
         {
           "name": "Delete Campaign",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "DELETE",
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/admin/campaigns/:id",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "admin", "campaigns", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "campaigns",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -2894,12 +4210,31 @@
         {
           "name": "Activate Campaign",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "PUT",
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/admin/campaigns/:id/activate",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "admin", "campaigns", ":id", "activate"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "campaigns",
+                ":id",
+                "activate"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -2913,12 +4248,31 @@
         {
           "name": "Deactivate Campaign",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "PUT",
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/admin/campaigns/:id/deactivate",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "admin", "campaigns", ":id", "deactivate"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "campaigns",
+                ":id",
+                "deactivate"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -2932,6 +4286,16 @@
         {
           "name": "Extend Campaign",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "PUT",
             "header": [
               {
@@ -2945,8 +4309,17 @@
             },
             "url": {
               "raw": "{{base_url}}/api/v1/admin/campaigns/:id/extend",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "admin", "campaigns", ":id", "extend"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "campaigns",
+                ":id",
+                "extend"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -2960,12 +4333,30 @@
         {
           "name": "Get Campaign Stats",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/admin/campaigns/stats",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "admin", "campaigns", "stats"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "campaigns",
+                "stats"
+              ]
             }
           },
           "response": []
@@ -2978,12 +4369,29 @@
         {
           "name": "List All Subscriptions",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/admin/subscriptions?page=1&page_size=20",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "admin", "subscriptions"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "subscriptions"
+              ],
               "query": [
                 {
                   "key": "page",
@@ -3001,12 +4409,30 @@
         {
           "name": "Get Subscription",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/admin/subscriptions/:id",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "admin", "subscriptions", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "subscriptions",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -3020,12 +4446,30 @@
         {
           "name": "Get Expiring Subscriptions",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/admin/subscriptions/expiring?days=7",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "admin", "subscriptions", "expiring"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "subscriptions",
+                "expiring"
+              ],
               "query": [
                 {
                   "key": "days",
@@ -3039,12 +4483,31 @@
         {
           "name": "Deactivate Subscription",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "PUT",
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/admin/subscriptions/:id/deactivate",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "admin", "subscriptions", ":id", "deactivate"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "subscriptions",
+                ":id",
+                "deactivate"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -3058,12 +4521,31 @@
         {
           "name": "Suspend Subscription",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "PUT",
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/admin/subscriptions/:id/suspend",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "admin", "subscriptions", ":id", "suspend"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "subscriptions",
+                ":id",
+                "suspend"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -3077,16 +4559,35 @@
         {
           "name": "Reactivate Subscription",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "PUT",
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/admin/subscriptions/:id/reactivate",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "admin", "subscriptions", ":id", "reactivate"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "subscriptions",
+                ":id",
+                "reactivate"
+              ],
               "variable": [
                 {
                   "key": "id",
-                  "value": "1"
+                  "value": "2"
                 }
               ]
             }
@@ -3096,6 +4597,16 @@
         {
           "name": "Cancel Subscription",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "POST",
             "header": [
               {
@@ -3109,8 +4620,17 @@
             },
             "url": {
               "raw": "{{base_url}}/api/v1/admin/subscriptions/:id/cancel",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "admin", "subscriptions", ":id", "cancel"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "subscriptions",
+                ":id",
+                "cancel"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -3124,12 +4644,30 @@
         {
           "name": "Get Subscription Stats",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/v1/admin/subscriptions/stats",
-              "host": ["{{base_url}}"],
-              "path": ["api", "v1", "admin", "subscriptions", "stats"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "subscriptions",
+                "stats"
+              ]
             }
           },
           "response": []
@@ -3157,6 +4695,11 @@
       "key": "access_token",
       "value": "",
       "type": "string"
+    },
+    {
+      "key": "admin_token",
+      "value": "",
+      "type": "default"
     }
   ]
 }
